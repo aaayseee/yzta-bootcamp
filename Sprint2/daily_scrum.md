@@ -6,9 +6,9 @@
 - Engel: Yok
 
 ## Gün 2
-- Ne yapıldı: (buraya güncel gelişmeyi ekle)
-- Ne yapılacak: (buraya planı ekle)
-- Engel: (varsa yaz, yoksa "Yok")
+- Ne yapıldı: 
+- Ne yapılacak: 
+- Engel: 
 
 ## Gün 3
 - Ne yapıldı:
