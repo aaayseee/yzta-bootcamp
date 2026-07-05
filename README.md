@@ -4,10 +4,10 @@ Bu depo, **YZTA Bootcamp** kapsamında geliştirilen, e-ticaret müşterilerinin
 
 ## 👥 Takım Üyeleri
 
-- [İsim] — Product Owner
-- [İsim] — Scrum Master
-- [İsim] — Developer
-- [İsim] — Developer
+- Halil İbrahim ARİ — Product Owner
+- Zeynep Yağmur TÜRKELİ — Scrum Master
+- Ayşe ULAŞLI — Developer
+- Tümer GÜNEŞ — Developer
 
 ---
 
