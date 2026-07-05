@@ -4,7 +4,7 @@ Bu depo, YZTA Bootcamp kapsamında geliştirdiğimiz Churn Prediction projesinin
 
 ## 1. Backlog Düzeni ve Story Seçimleri & Sprint Board
 Proje görevleri belirlenmiş ve GitHub Projects üzerinden Scrum tahtası oluşturularak süreç yönetimi başlatılmıştır. 
-*(Buradaki bu yazıyı sil ve Sprint Board SS'ini bilgisayarından tutup buraya sürükle bırak. GitHub kodu kendi oluşturacak)*
+*(<img width="1915" height="827" alt="image" src="https://github.com/user-attachments/assets/ae075312-b8a1-4720-a4ad-0f3b6119b748" />)*
 
 ## 2. Daily Scrum 
 Takım içi iletişimimiz ve günlük durum değerlendirmelerimiz düzenli olarak sağlanmaktadır.
