@@ -34,7 +34,7 @@ Bu depo, **YZTA Bootcamp** kapsamında geliştirilen, e-ticaret müşterilerinin
 
 ## 🏗️ Proje Mimarisi
 
-```
+\`\`\`
 Kaggle Veri Seti (5.630 müşteri, 20 özellik)
        │
        ▼
@@ -56,11 +56,13 @@ Kaggle Veri Seti (5.630 müşteri, 20 özellik)
        │
        ▼
   YZ Destekli Aksiyon Önerisi (LLM)
-```
+\`\`\`
+
+---
 
 ## 📂 Proje Yapısı
 
-```
+\`\`\`
 .
 ├── Sprint1/
 │   ├── sprint1_review.md
@@ -70,7 +72,9 @@ Kaggle Veri Seti (5.630 müşteri, 20 özellik)
 │   └── daily_scrum.md
 ├── YZTA_Churn_Tahmin_Modeli.ipynb
 └── README.md
-```
+\`\`\`
+
+---
 
 ## 🛠️ Kullanılan Teknolojiler
 
@@ -141,7 +145,5 @@ Kaggle Veri Seti (5.630 müşteri, 20 özellik)
 ---
 
 > Bu proje, Scrum metodolojisi kullanılarak ekip çalışması kapsamında geliştirilmektedir.
-
-
 
 
