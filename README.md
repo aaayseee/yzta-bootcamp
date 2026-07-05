@@ -33,31 +33,34 @@ Bu depo, **YZTA Bootcamp** kapsamında geliştirilen, e-ticaret müşterilerinin
 ---
 
 ## 🏗️ Proje Mimarisi
-Kaggle Veri Seti (5.630 müşteri, 20 özellik)
-│
-▼
-Veri Temizliği (eksik değer, kategorik düzeltme)
-│
-▼
-Keşifsel Veri Analizi (EDA)
-│
-▼
-Encoding
-│
-▼
-Random Forest Modeli (%97.4 doğruluk)
-│
-▼
-┌─────────────────────┬────────────────────┐
-│ Müşteri Segmentasyonu │ Streamlit Arayüzü │
-└─────────────────────┴────────────────────┘
-│
-▼
-YZ Destekli Aksiyon Önerisi (LLM)
 
----
+```
+Kaggle Veri Seti (5.630 müşteri, 20 özellik)
+       │
+       ▼
+  Veri Temizliği (eksik değer, kategorik düzeltme)
+       │
+       ▼
+  Keşifsel Veri Analizi (EDA)
+       │
+       ▼
+     Encoding
+       │
+       ▼
+ Random Forest Modeli (%97.4 doğruluk)
+       │
+       ▼
+ ┌─────────────────────┬────────────────────┐
+ │ Müşteri Segmentasyonu │ Streamlit Arayüzü │
+ └─────────────────────┴────────────────────┘
+       │
+       ▼
+  YZ Destekli Aksiyon Önerisi (LLM)
+```
 
 ## 📂 Proje Yapısı
+
+```
 .
 ├── Sprint1/
 │   ├── sprint1_review.md
@@ -67,8 +70,7 @@ YZ Destekli Aksiyon Önerisi (LLM)
 │   └── daily_scrum.md
 ├── YZTA_Churn_Tahmin_Modeli.ipynb
 └── README.md
-
----
+```
 
 ## 🛠️ Kullanılan Teknolojiler
 
