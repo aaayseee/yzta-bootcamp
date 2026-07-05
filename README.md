@@ -8,11 +8,13 @@ Proje görevleri belirlenmiş ve GitHub Projects üzerinden Scrum tahtası oluş
 
 ## 2. Daily Scrum 
 Takım içi iletişimimiz ve günlük durum değerlendirmelerimiz düzenli olarak sağlanmaktadır.
-*(Buradaki bu yazıyı sil ve WhatsApp/Discord mesajının SS'ini buraya sürükle bırak)*
+<img width="825" height="1184" alt="photo_5931537556371608684_y" src="https://github.com/user-attachments/assets/16245dc4-d272-4d5e-b0a4-e2414d94176d" />
+
 
 ## 3. Ürün Durumu (Product Increment)
 İlk sprint itibarıyla Kaggle'dan çekilen veri seti temizlenmiş, Keşifsel Veri Analizi (EDA) tamamlanmış ve Random Forest makine öğrenmesi modeli kurularak %97.4 doğruluk (accuracy) oranına ulaşılmıştır.
-*(Buradaki bu yazıyı sil ve Colab'deki grafiklerin göründüğü ekranın SS'ini buraya sürükle bırak)*
+<img width="1916" height="940" alt="image" src="https://github.com/user-attachments/assets/a6e925a6-2415-4b17-8bb0-e3694113b591" />
+
 
 ---
 
