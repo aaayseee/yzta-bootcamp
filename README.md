@@ -130,18 +130,13 @@ Kaggle Veri Seti (5.630 müşteri, 20 özellik)
 * GitHub reposu ve Scrum tahtası oluşturuldu
 
 # Backlog Düzeni ve Sprint Board
-<img width="1918" height="893" alt="Ekran görüntüsü 2026-07-19 213824" src="https://github.com/user-attachments/assets/71e6eadf-9dce-4f3b-a568-15960ba412f8" />
-<img width="1918" height="883" alt="Ekran görüntüsü 2026-07-19 213737" src="https://github.com/user-attachments/assets/4c219f56-58dd-4c35-a2ab-f832a2d4ad67" />
-<img width="1918" height="907" alt="Ekran görüntüsü 2026-07-19 213644" src="https://github.com/user-attachments/assets/0fb48a1c-93b4-416c-bc2c-3223fad361d9" />
-
-
-
+<img width="1915" height="827" alt="image" src="https://github.com/user-attachments/assets/32054919-efcf-4dba-ac90-5518dce4498a" />
 
 # Daily Scrum
-![alt text](617210017-16245dc4-d272-4d5e-b0a4-e2414d94176d.jpg)
+<img width="825" height="1184" alt="image" src="https://github.com/user-attachments/assets/3afcf251-3350-4a43-aadb-b5bb1245d7a6" />
 
 # Ürün Durumu (Product Increment)
-![alt text](617210096-a6e925a6-2415-4b17-8bb0-e3694113b591.png)
+<img width="1916" height="940" alt="image" src="https://github.com/user-attachments/assets/3cc363f1-ec1e-47e6-bfd6-b4bf3444c3de" />
 
 # 🔎 Sprint 1 Review
 **Tamamlananlar:** Veri setinin entegrasyonu, GitHub repo ve Scrum tahtasının kurulumu, EDA aşaması ve Random Forest modelinin eğitilmesi.
@@ -188,8 +183,8 @@ Kaggle Veri Seti (5.630 müşteri, 20 özellik)
 > **- Neler yapacağız?:** 1.500 satırlık arayüz kodunu temizleyip modüler Python dosyalarına (`styles.py`, `data_loader.py`, `components/`, `pages_views/`) ayıracağım ve projeyi GitHub'a push edeceğim.
 > **- Engel/Blocker Var mı?:** Yok, Sprint 2 hedefleri tamamlanıyor.
 
-![alt text](5974166515533680199.jpg)
-![alt text](5974166515533680200.jpg)
+<img width="826" height="410" alt="5974166515533680199" src="https://github.com/user-attachments/assets/f49efde7-48be-4053-9d8a-e7c807fb3572" />
+<img width="828" height="858" alt="5974166515533680200" src="https://github.com/user-attachments/assets/9ba707ee-ea3d-48fe-8d10-54a261a18f50" />
 ---
 
 ### 🎯 2. Backlog Dağıtma Mantığı (Sprint 2 Backlog Rasyoneli)
@@ -200,7 +195,6 @@ Kaggle Veri Seti (5.630 müşteri, 20 özellik)
   2. **Yüksek Öncelik (P0 - Dark/Light Theme Engine):** Kullanıcının tema tercihine göre arka plan tuvalinin ve metin renklerinin anlık değişmesi.
   3. **Orta Öncelik (P1 - Advanced Business Analytics):** What-If ROI Simülatörü, Erken Uyarı Otomasyonu, Kohort Retention Matrisi.
   4. **Teknik Öncelik (P1 - Code Architecture):** Monolitik `arayuz.py` dosyasını modüler paket yapısına kavuşturma.
-
 ---
 
 ### 📋 3. Sprint Board / Breadboard Updates (VS Code Görev Durumu)
@@ -217,9 +211,9 @@ Kaggle Veri Seti (5.630 müşteri, 20 özellik)
 | **TSK-18** | GitHub Repository Entegrasyonu ve Push | DevOps | **DONE ✅** |
 
 # Backlog Düzeni ve Sprint Board
-![alt text](<Ekran görüntüsü 2026-07-19 213644.png>)
-![alt text](<Ekran görüntüsü 2026-07-19 213737.png>)
-![alt text](<Ekran görüntüsü 2026-07-19 213824.png>)
+<img width="1918" height="907" alt="Ekran görüntüsü 2026-07-19 213644" src="https://github.com/user-attachments/assets/42053a69-ec47-4bc8-b6d9-b5634aaed6c1" />
+<img width="1918" height="883" alt="Ekran görüntüsü 2026-07-19 213737" src="https://github.com/user-attachments/assets/8fbf632d-eb3c-4bd4-8dd2-ed055a20ffbf" />
+<img width="1918" height="893" alt="Ekran görüntüsü 2026-07-19 213824" src="https://github.com/user-attachments/assets/4e58d266-f819-475a-86f2-abb6eee6eedd" />
 ---
 
 ### 📦 4. Ürün Durumu (Product Increment Status)
@@ -230,17 +224,16 @@ Sprint 2 sonunda teslim edilen **LoyalCart v2.5 Executive Pro** güncel sürüm 
 * **Modüler Dosya Yapısı:** `styles.py`, `data_loader.py`, `components/`, `pages_views/` klasör ayrımıyla %100 temiz Python mimarisi.
 * **Gelişmiş 9 Analitik Modül:** Dashboard, What-If Simülasyonu, Erken Uyarı, Kohort Matrisi, Şikayet SLA, NPS Ligi, Bireysel Analiz, Segmentasyon ve Geçmiş Kayıtlar.
 
-![alt text](<Ekran görüntüsü 2026-07-19 214048.png>)
-![alt text](<Ekran görüntüsü 2026-07-19 214147.png>)
-![alt text](<Ekran görüntüsü 2026-07-19 214255.png>)
-![alt text](<Ekran görüntüsü 2026-07-19 214400.png>)
-![alt text](<Ekran görüntüsü 2026-07-19 214529.png>)
-![alt text](<Ekran görüntüsü 2026-07-19 214632.png>)
-![alt text](<Ekran görüntüsü 2026-07-19 214710.png>)
-![alt text](<Ekran görüntüsü 2026-07-19 214811.png>)
-![alt text](<Ekran görüntüsü 2026-07-19 214848.png>)
-![alt text](<Ekran görüntüsü 2026-07-19 214916.png>)
-
+<img width="1918" height="958" alt="Ekran görüntüsü 2026-07-19 214048" src="https://github.com/user-attachments/assets/aaacc573-1c3a-4d72-be00-c88c99e1a3e4" />
+<img width="1918" height="900" alt="Ekran görüntüsü 2026-07-19 214147" src="https://github.com/user-attachments/assets/d651b8fc-afeb-4640-a9c6-4ef7ad9fe67d" />
+<img width="1918" height="965" alt="Ekran görüntüsü 2026-07-19 214255" src="https://github.com/user-attachments/assets/fc6d4d95-530c-4713-9dde-40e0fd23b40e" />
+<img width="1918" height="955" alt="Ekran görüntüsü 2026-07-19 214400" src="https://github.com/user-attachments/assets/c11b65f4-9b19-41f8-a68f-a9fd34fcfe18" />
+<img width="1918" height="960" alt="Ekran görüntüsü 2026-07-19 214529" src="https://github.com/user-attachments/assets/6c19434e-e7c3-4b63-bf76-4f865cb43b8f" />
+<img width="1918" height="967" alt="Ekran görüntüsü 2026-07-19 214632" src="https://github.com/user-attachments/assets/479f9569-a8be-41b0-a692-a4401db75512" />
+<img width="1918" height="958" alt="Ekran görüntüsü 2026-07-19 214710" src="https://github.com/user-attachments/assets/b52d0f6c-b74e-4791-928f-31e58c407d22" />
+<img width="1918" height="952" alt="Ekran görüntüsü 2026-07-19 214811" src="https://github.com/user-attachments/assets/294693c7-536b-45e6-9861-ad761af4e3a8" />
+<img width="1918" height="950" alt="Ekran görüntüsü 2026-07-19 214848" src="https://github.com/user-attachments/assets/281e3598-3cd2-4d27-8506-9f4a539de79d" />
+<img width="1918" height="951" alt="Ekran görüntüsü 2026-07-19 214916" src="https://github.com/user-attachments/assets/286a307e-d475-4bf8-8f4d-0852bdcd6fb2" />
 ---
 
 ### 🔍 5. Sprint 2 Review (Sprint İnceleme Raporu)
