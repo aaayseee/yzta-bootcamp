@@ -11,4 +11,4 @@ Ekip: Ekip-116 | Churn Prediction & Müşteri Segmentasyon
 | US-03 | Churn Tahmin Modeli | ✅ Done |
 | US-04 | Müşteri Segmentasyonu | ✅ Done |
 | US-05 | Streamlit Arayüzü | ✅ Done |
-| US-06 | YZ Aksiyon Öneri Asistanı | 🔲 Sprint 3'e Taşındı |
+| US-06 | YZ Aksiyon Öneri Asistanı | ✅ Done |
