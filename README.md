@@ -130,7 +130,7 @@ Kaggle Veri Seti (5.630 müşteri, 20 özellik)
 * GitHub reposu ve Scrum tahtası oluşturuldu
 
 # Backlog Düzeni ve Sprint Board
-![alt text](617209818-ae075312-b8a1-4720-a4ad-0f3b6119b748.png)
+!(617209818-ae075312-b8a1-4720-a4ad-0f3b6119b748.png)
 
 # Daily Scrum
 ![alt text](617210017-16245dc4-d272-4d5e-b0a4-e2414d94176d.jpg)
