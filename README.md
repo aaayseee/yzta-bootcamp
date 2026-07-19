@@ -129,7 +129,38 @@ Kaggle Veri Seti (5.630 müşteri, 20 özellik)
 * Random Forest modeli kuruldu — **%97.4 doğruluk**
 * GitHub reposu ve Scrum tahtası oluşturuldu
 
----
+# Backlog Düzeni ve Sprint Board
+![alt text](617209818-ae075312-b8a1-4720-a4ad-0f3b6119b748.png)
+
+# Daily Scrum
+![alt text](617210017-16245dc4-d272-4d5e-b0a4-e2414d94176d.jpg)
+
+# Ürün Durumu (Product Increment)
+![alt text](617210096-a6e925a6-2415-4b17-8bb0-e3694113b591.png)
+
+# 🔎 Sprint 1 Review
+**Tamamlananlar:** Veri setinin entegrasyonu, GitHub repo ve Scrum tahtasının kurulumu, EDA aşaması ve Random Forest modelinin eğitilmesi.
+
+**Mevcut Durum:** Sprint 1 için planlanan tüm hedeflere beklenenden kısa sürede ulaşıldı. Modelin %97.4 doğruluk göstermesi, projenin temelinin sağlam atıldığını gösteriyor. (Not: Yüksek doğruluk oranı overfitting ihtimaline karşı Sprint 2'de cross-validation ile doğrulanacak.)
+
+# 🔁 Sprint 1 Retrospective
+**Ne İyi Gitti:** Disiplinli ve planlı ilerleme zaman yönetimini kolaylaştırdı. Colab–GitHub entegrasyonu sorunsuz çalıştı.
+
+**Neler Zorladı:** GitHub reposunu ayağa kaldırırken küçük bir yetkilendirme adımı zaman aldı, hızlıca çözüldü.
+
+**Sprint 2 Aksiyon Planı:** Model backend'i sağlam olduğuna göre; müşteri segmentasyonu, Streamlit arayüzü ve YZ aksiyon önerisi geliştirmelerine odaklanılacak.
+
+# 📌 Sprint 2 Hedefleri
+| User Story | Durum |
+| :--- | :--- |
+| US-04 Müşteri Segmentasyonu | 🔲 To Do |
+| US-05 Streamlit Arayüzü | 🔲 To Do |
+| US-06 YZ Aksiyon Öneri Asistanı | 🔲 To Do |
+
+# 📈 Proje Durumu
+🟡 Geliştirme Aşamasında — Sprint 1 başarıyla tamamlandı, Sprint 2'de segmentasyon ve arayüz çalışmaları sürüyordu.
+
+*Bu proje, Scrum metodolojisi kullanılarak ekip çalışması kapsamında geliştirilmektedir.*
 
 ## 📅 SPRINT 2 SCRUM & TESLİMAT DOSYASI
 
@@ -137,21 +168,23 @@ Kaggle Veri Seti (5.630 müşteri, 20 özellik)
 
 ### 💬 1. Daily Scrum Notları
 
-#### 📅 Gün 1: 3D Görsellik & Parallaks Arayüzü
-> **- Dün Ne Yaptım?:** KPI kartlarının sayfa yenilemede oturumu kapatma hatasını çözdük.
-> **- Bugün Ne Yapacağım?:** Dashboard'a farenin hareketine duyarlı 3D Parallax tilt efekti ve arka planda süzülen 3D Matrix para yağmuru animasyonunu entegre edeceğim.
+####  3D Görsellik & Parallaks Arayüzü
+> **- Neler yaptık?:** KPI kartlarının sayfa yenilemede oturumu kapatma hatasını çözdük.
+> **- Neler yapacağız?:** Dashboard'a farenin hareketine duyarlı 3D Parallax tilt efekti ve arka planda süzülen 3D Matrix para yağmuru animasyonunu entegre edeceğiz.
 > **- Engel/Blocker Var mı?:** Yok.
 
-#### 📅 Gün 2: Açık Mod (Light Mode) Uyum ve Gelişmiş Modüller
-> **- Dün Ne Yaptım?:** 3D bükülme efektini ve 5 yeni gelişmiş analitik modülü (What-If Simülasyonu, Erken Uyarı Merkezi, Kohort Raporu, Şikayet Yönetimi, NPS Ligi) tamamladım.
-> **- Bugün Ne Yapacağım?:** Streamlit açık tema (Light Mode) seçildiğinde oluşan okunamayan metin hatalarını giderip çift-tema uyumlu cam (glassmorphism) tasarımını yayına alacağım.
+####  Açık Mod (Light Mode) Uyum ve Gelişmiş Modüller
+> **- Neler yaptık?:** 3D bükülme efektini ve 5 yeni gelişmiş analitik modülü (What-If Simülasyonu, Erken Uyarı Merkezi, Kohort Raporu, Şikayet Yönetimi, NPS Ligi) tamamladık.
+> **- Neler yapacağız?:** Streamlit açık tema (Light Mode) seçildiğinde oluşan okunamayan metin hatalarını giderip çift-tema uyumlu cam (glassmorphism) tasarımını yayına alacağız.
 > **- Engel/Blocker Var mı?:** Yok, arayüz testleri devam ediyor.
 
-#### 📅 Gün 3: Yüzen Cam Ada Menü & Kod Temizliği (Refactoring)
-> **- Dün Ne Yaptım?:** Açık ve koyu temayı dinamik algılayan JS tuval döngüsünü ekledim. Sol navigasyon panelini ekrandan bağımsız yüzen bir cam kapsüle (Floating Glass Island) dönüştürdüm.
-> **- Bugün Ne Yapacağım?:** 1.500 satırlık arayüz kodunu temizleyip modüler Python dosyalarına (`styles.py`, `data_loader.py`, `components/`, `pages_views/`) ayıracağım ve projeyi GitHub'a push edeceğim.
+####  Yüzen Cam Ada Menü & Kod Temizliği (Refactoring)
+> **- Neler yaptık?:** Açık ve koyu temayı dinamik algılayan JS tuval döngüsünü ekledim. Sol navigasyon panelini ekrandan bağımsız yüzen bir cam kapsüle (Floating Glass Island) dönüştürdüm.
+> **- Neler yapacağız?:** 1.500 satırlık arayüz kodunu temizleyip modüler Python dosyalarına (`styles.py`, `data_loader.py`, `components/`, `pages_views/`) ayıracağım ve projeyi GitHub'a push edeceğim.
 > **- Engel/Blocker Var mı?:** Yok, Sprint 2 hedefleri tamamlanıyor.
 
+![alt text](5974166515533680199.jpg)
+![alt text](5974166515533680200.jpg)
 ---
 
 ### 🎯 2. Backlog Dağıtma Mantığı (Sprint 2 Backlog Rasyoneli)
@@ -178,6 +211,10 @@ Kaggle Veri Seti (5.630 müşteri, 20 özellik)
 | **TSK-17** | Kod Tabanı Temizliği & Modüler Python Mimarisi | Architecture | **DONE ✅** |
 | **TSK-18** | GitHub Repository Entegrasyonu ve Push | DevOps | **DONE ✅** |
 
+# Backlog Düzeni ve Sprint Board
+![alt text](<Ekran görüntüsü 2026-07-19 213644.png>)
+![alt text](<Ekran görüntüsü 2026-07-19 213737.png>)
+![alt text](<Ekran görüntüsü 2026-07-19 213824.png>)
 ---
 
 ### 📦 4. Ürün Durumu (Product Increment Status)
@@ -187,6 +224,17 @@ Sprint 2 sonunda teslim edilen **LoyalCart v2.5 Executive Pro** güncel sürüm 
 * **Canlı Portalı:** Streamlit 3D Holografik Panel (`http://localhost:8501`)
 * **Modüler Dosya Yapısı:** `styles.py`, `data_loader.py`, `components/`, `pages_views/` klasör ayrımıyla %100 temiz Python mimarisi.
 * **Gelişmiş 9 Analitik Modül:** Dashboard, What-If Simülasyonu, Erken Uyarı, Kohort Matrisi, Şikayet SLA, NPS Ligi, Bireysel Analiz, Segmentasyon ve Geçmiş Kayıtlar.
+
+![alt text](<Ekran görüntüsü 2026-07-19 214048.png>)
+![alt text](<Ekran görüntüsü 2026-07-19 214147.png>)
+![alt text](<Ekran görüntüsü 2026-07-19 214255.png>)
+![alt text](<Ekran görüntüsü 2026-07-19 214400.png>)
+![alt text](<Ekran görüntüsü 2026-07-19 214529.png>)
+![alt text](<Ekran görüntüsü 2026-07-19 214632.png>)
+![alt text](<Ekran görüntüsü 2026-07-19 214710.png>)
+![alt text](<Ekran görüntüsü 2026-07-19 214811.png>)
+![alt text](<Ekran görüntüsü 2026-07-19 214848.png>)
+![alt text](<Ekran görüntüsü 2026-07-19 214916.png>)
 
 ---
 
