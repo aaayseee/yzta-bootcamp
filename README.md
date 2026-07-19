@@ -120,7 +120,20 @@ Kaggle Veri Seti (5.630 müşteri, 20 özellik)
 
 ---
 
+## 📅 SPRINT 1 ÇIKTILARI
+
+* Veri seti Kaggle'dan çekildi (5.630 müşteri, 20 özellik)
+* Eksik değerler medyan ile dolduruldu, kategorik düzeltmeler yapıldı
+* Keşifsel Veri Analizi (EDA) tamamlandı
+* Encoding işlemi tamamlandı
+* Random Forest modeli kuruldu — **%97.4 doğruluk**
+* GitHub reposu ve Scrum tahtası oluşturuldu
+
+---
+
 ## 📅 SPRINT 2 SCRUM & TESLİMAT DOSYASI
+
+> ℹ️ **Not:** Makine öğrenmesi churn tahmin modeli (Random Forest) Sprint 1 aşamasında tamamlanmış olup, **Sprint 2'deki tüm geliştirmeler VS Code ortamında** sistem mimarisi, FastAPI backend entegrasyonu, 3D arayüz (UI/UX) ve modüler kod refactoring üzerine gerçekleştirilmiştir.
 
 ### 💬 1. Daily Scrum Notları
 
@@ -152,7 +165,7 @@ Kaggle Veri Seti (5.630 müşteri, 20 özellik)
 
 ---
 
-### 📋 3. Sprint Board Updates (Sprint 2 Görev Durumu)
+### 📋 3. Sprint Board / Breadboard Updates (VS Code Görev Durumu)
 
 | Task ID | Görev Adı | İlgili Kişi | Durum (Status) |
 | :--- | :--- | :--- | :--- |
@@ -203,13 +216,15 @@ Sprint 2 sonunda teslim edilen **LoyalCart v2.5 Executive Pro** güncel sürüm 
 
 ---
 
-## 📌 Sprint 2 User Story Durumu
+## 📌 Sprint User Story Durumu
 
 | User Story | Durum |
 |---|---|
-| US-04 Müşteri Segmentasyonu & Gelişmiş Modüller | ✅ DONE |
-| US-05 Streamlit 3D & Çift-Tema Arayüzü | ✅ DONE |
-| US-06 YZ Aksiyon Öneri & What-If Simülatörü | ✅ DONE |
+| US-01 Veri Temizliği & EDA | ✅ SPRINT 1 DONE |
+| US-02 Random Forest Modeli (%97.4) | ✅ SPRINT 1 DONE |
+| US-04 Müşteri Segmentasyonu & Gelişmiş Modüller | ✅ SPRINT 2 DONE |
+| US-05 Streamlit 3D & Çift-Tema Arayüzü | ✅ SPRINT 2 DONE |
+| US-06 YZ Aksiyon Öneri & What-If Simülatörü | ✅ SPRINT 2 DONE |
 
 ---
 
