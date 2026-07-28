@@ -2,6 +2,8 @@ def get_custom_css():
     return """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600;700;800;900&display=swap');
+@import url('https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css');
 
 /* Sayfa Arkaplanı ve Yazı Tipleri */
 html, body, [data-testid="stAppViewContainer"], .stWidgetLabel {
@@ -156,15 +158,146 @@ div[data-testid="stRadio"] div[role="radiogroup"] label div[dir="ltr"] {
     animation: sway-slow 12s infinite ease-in-out !important;
 }
 
-/* Giriş Kartı Özel Tasarımı */
+/* Giriş Kartı Özel Tasarımı (Modern Glassmorphism) */
 .login-card {
-    background: rgba(10, 14, 23, 0.7) !important;
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    border: 2px solid rgba(255, 255, 255, 0.2) !important;
     border-radius: 16px !important;
-    padding: 30px !important;
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6) !important;
+    padding: 30px 40px !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2) !important;
+    color: #fff !important;
+}
+
+.login-card, .login-card h1, .login-card h3, .login-card input, .login-card button, .login-card label, .login-card a, .login-card p {
+    font-family: 'Poppins', sans-serif !important;
+}
+
+/* Streamlit Inputs Glassmorphism Override */
+.login-card div[data-testid="stTextInput"] input {
+    background: transparent !important;
+    border: 2px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 40px !important;
+    font-size: 16px !important;
+    color: #fff !important;
+    padding: 10px 45px 10px 20px !important; /* 45px on right for icon */
+    height: 50px !important;
+    outline: none !important;
+    box-sizing: border-box !important;
+    transition: all 0.3s ease !important;
+}
+
+.login-card div[data-testid="stTextInput"] input::placeholder {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.login-card div[data-testid="stTextInput"] input:focus {
+    border-color: #fff !important;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Pseudo-elements for Boxicons absolute positioning inside input wrapper */
+.login-card div[data-testid="stTextInput"] > div {
+    position: relative !important;
+}
+
+/* User icon for Username */
+.login-card div[data-testid="stTextInput"]:first-of-type > div::after {
+    content: "\\eec4" !important; /* Boxicon bxs-user */
+    font-family: 'boxicons' !important;
+    position: absolute !important;
+    right: 20px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    font-size: 20px !important;
+    color: rgba(255, 255, 255, 0.75) !important;
+    pointer-events: none !important;
+    z-index: 5 !important;
+}
+
+/* Lock icon for Password */
+.login-card div[data-testid="stTextInput"]:nth-of-type(2) > div::after {
+    content: "\\eea7" !important; /* Boxicon bxs-lock-alt */
+    font-family: 'boxicons' !important;
+    position: absolute !important;
+    right: 20px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    font-size: 20px !important;
+    color: rgba(255, 255, 255, 0.75) !important;
+    pointer-events: none !important;
+    z-index: 5 !important;
+}
+
+/* Streamlit Button override for modern white pill button */
+.login-card div.stButton button {
+    width: 100% !important;
+    height: 45px !important;
+    background: #fff !important;
+    border: none !important;
+    outline: none !important;
+    border-radius: 40px !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) !important;
+    cursor: pointer !important;
+    font-size: 16px !important;
+    color: #333 !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    margin-top: 10px !important;
+}
+
+.login-card div.stButton button:hover {
+    background: rgba(255, 255, 255, 0.9) !important;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4) !important;
+    transform: translateY(-1px) !important;
+}
+
+.login-card div.stButton button:active {
+    transform: translateY(1px) !important;
+}
+
+/* Remember Forgot & Register styles */
+.remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin: 15px 0;
+    color: #fff;
+    font-family: sans-serif;
+}
+.remember-forgot label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+.remember-forgot input[type="checkbox"] {
+    accent-color: #fff;
+    cursor: pointer;
+}
+.remember-forgot a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+}
+.remember-forgot a:hover {
+    text-decoration: underline;
+}
+
+.register-link {
+    font-size: 14px;
+    text-align: center;
+    margin: 20px 0 10px;
+    color: #fff;
+}
+.register-link p a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+.register-link p a:hover {
+    text-decoration: underline;
 }
 
 /* Metrik Kartı Tasarımları (Vibrant Border & Glow) */
@@ -274,6 +407,10 @@ div[data-testid="stRadio"] div[role="radiogroup"] label div[dir="ltr"] {
     border-radius: 12px !important;
     padding: 10px !important;
     box-shadow: 0 10px 25px rgba(0,0,0,0.4) !important;
+    transition: box-shadow 0.3s ease !important;
+}
+[data-testid="stDataFrame"]:hover {
+    box-shadow: 0 14px 32px rgba(14, 165, 233, 0.18) !important;
 }
 
 /* Sonuç Panelleri */
@@ -351,12 +488,41 @@ div[data-testid="stRadio"] div[role="radiogroup"] label div[dir="ltr"] {
 
 /* Light mode login overrides */
 .light-theme .login-card {
-    background: rgba(255, 255, 255, 0.75) !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08) !important;
+    background: rgba(255, 255, 255, 0.5) !important;
+    border: 2px solid rgba(15, 23, 42, 0.15) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
+    color: #0f172a !important;
 }
 .light-theme .login-card h3 {
     color: #0f172a !important;
+}
+.light-theme .login-card div[data-testid="stTextInput"] input {
+    border-color: rgba(15, 23, 42, 0.15) !important;
+    color: #0f172a !important;
+}
+.light-theme .login-card div[data-testid="stTextInput"] input::placeholder {
+    color: #475569 !important;
+}
+.light-theme .login-card div[data-testid="stTextInput"] input:focus {
+    border-color: #0f172a !important;
+    box-shadow: 0 0 10px rgba(15, 23, 42, 0.1) !important;
+}
+.light-theme .login-card div.stButton button {
+    background: #0f172a !important;
+    color: #ffffff !important;
+}
+.light-theme .login-card div.stButton button:hover {
+    background: #1e293b !important;
+    box-shadow: 0 0 12px rgba(15, 23, 42, 0.2) !important;
+}
+.light-theme .remember-forgot,
+.light-theme .remember-forgot a,
+.light-theme .register-link,
+.light-theme .register-link p a {
+    color: #334155 !important;
+}
+.light-theme .remember-forgot input[type="checkbox"] {
+    accent-color: #0f172a !important;
 }
 
 /* Light mode support ticket & results card text fix */
@@ -424,133 +590,143 @@ div[data-testid="stRadio"] div[role="radiogroup"] label div[dir="ltr"] {
     color: #1e293b !important;
 }
 
+/* ----------------------------------------------------------------
+   AÇIK MOD HATA DÜZELTMELERİ (kritik: sayfa başlıkları/tablolar
+   koyu moda göre kodlanmış inline renklerle görünmez oluyordu)
+   ---------------------------------------------------------------- */
+
+/* h1-h6 başlıkları için kapsamlı okunabilirlik düzeltmesi.
+   (dashboard.py, complaints.py, simulation.py vb. sayfalardaki
+   `style="color:#f8fafc"` gibi koyu-mod-özel satır içi renkler
+   açık modda krem arkaplan üzerinde neredeyse görünmez kalıyordu) */
+.light-theme h1:not(.animated-gradient-text),
+.light-theme h2:not(.animated-gradient-text),
+.light-theme h3:not(.animated-gradient-text),
+.light-theme h4,
+.light-theme h5,
+.light-theme h6,
+.light-theme label,
+.light-theme [data-testid="stMarkdownContainer"] {
+    color: #0f172a !important;
+}
+
+/* Sidebar logo ve alt bilgi yazısı (LoyalCart) satır içi #f8fafc
+   rengiyle sabitlenmişti; açık modda cam sidebar üzerinde kayboluyordu */
+.light-theme [data-testid="stSidebarUserContent"] span,
+.light-theme [data-testid="stSidebarUserContent"] div {
+    color: #0f172a !important;
+}
+.light-theme [data-testid="stSidebarUserContent"] div[style*="color: #64748b"] {
+    color: #64748b !important;
+}
+
+/* Veri tabloları / DataFrame'ler koyu arkaplanla sabitlenmişti,
+   açık modda temayla uyumlu, okunaklı bir görünüme çevrildi */
+.light-theme [data-testid="stDataFrame"] {
+    background: rgba(255, 255, 255, 0.65) !important;
+    border: 1px solid rgba(15, 23, 42, 0.08) !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06) !important;
+}
+.light-theme [data-testid="stDataFrame"]:hover {
+    box-shadow: 0 14px 30px rgba(3, 105, 161, 0.12) !important;
+}
+
+/* Streamlit metrik / expander / tab bileşenleri için genel kontrast */
+.light-theme [data-testid="stMetric"],
+.light-theme [data-testid="stExpander"] {
+    color: #0f172a !important;
+}
+.light-theme [data-testid="stMetricLabel"] {
+    color: #475569 !important;
+}
+.light-theme hr {
+    border-color: rgba(15, 23, 42, 0.12) !important;
+}
+
+/* Butonlar için açık mod kontrastı (giriş ekranı dışındaki genel butonlar) */
+.light-theme div.stButton button:not(.login-card div.stButton button) {
+    color: #0f172a !important;
+    border-color: rgba(15, 23, 42, 0.15) !important;
+}
+
+/* ----------------------------------------------------------------
+   GİRİŞ SONRASI ANİMASYONLAR (sayfa açılışı & etkileşim)
+   ---------------------------------------------------------------- */
+@keyframes fade-in-up {
+    0% { opacity: 0; transform: translateY(18px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+section.main .block-container {
+    animation: fade-in-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+}
+
+/* Sekme/expander geçişlerine yumuşaklık */
+[data-testid="stExpander"], [data-baseweb="tab-panel"] {
+    transition: all 0.3s ease !important;
+}
+
+/* Plotly grafik kartlarına hafif giriş animasyonu ve hover parlaması */
+[data-testid="stPlotlyChart"] {
+    animation: fade-in-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+    border-radius: 14px !important;
+    transition: box-shadow 0.3s ease, transform 0.3s ease !important;
+}
+[data-testid="stPlotlyChart"]:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 16px 32px rgba(99, 102, 241, 0.15) !important;
+}
+
 /* ====================================================
-   INTERACTIVE POWER SWITCH & NEON LOGIN ANIMATION
+   NEON SPIDER WEB & DROP-DOWN SWAY ANIMATIONS
    ==================================================== */
-.power-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 25px;
-}
-.power-label {
-    font-size: 11px;
-    font-weight: 700;
-    color: #64748b;
-    letter-spacing: 3px;
-    margin-bottom: 10px;
-    transition: all 0.4s ease;
-}
-
-/* Switch Styles */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 66px;
-    height: 38px;
-}
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-.slider {
+.web-thread {
     position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #0c101b !important;
-    border: 1px solid rgba(255, 255, 255, 0.05) !important;
-    border-radius: 38px !important;
-    transition: .4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
-}
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 28px;
-    width: 28px;
-    left: 4px;
-    bottom: 4px;
-    background-color: #334155;
-    border-radius: 50%;
-    transition: .4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+    top: -50px;
+    left: 50%;
+    width: 1.5px;
+    height: 230px;
+    background: linear-gradient(to bottom, rgba(16, 185, 129, 0.85), rgba(14, 165, 233, 0.05));
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+    transform-origin: top center;
+    z-index: 2;
+    animation: thread-drop 1.8s cubic-bezier(0.25, 1, 0.5, 1) forwards, thread-sway 5s infinite ease-in-out 1.8s;
 }
 
-input:checked + .slider {
-    background-color: rgba(16, 185, 129, 0.15) !important;
-    border-color: rgba(16, 185, 129, 0.4) !important;
-    box-shadow: 0 0 15px rgba(16, 185, 129, 0.2), inset 0 2px 5px rgba(0,0,0,0.2);
-}
-input:checked + .slider:before {
-    transform: translateX(28px);
-    background-color: #10b981;
-    box-shadow: 0 0 12px #10b981, 0 0 25px rgba(16, 185, 129, 0.6);
+/* Sibling animation mapping from the DOM marker */
+.login-card-wrapper ~ div.element-container,
+.login-card-wrapper ~ div[data-testid="stHorizontalBlock"] {
+    transform-origin: top center !important;
+    animation: card-spider-drop 1.8s cubic-bezier(0.175, 0.885, 0.32, 1.12) forwards, card-spider-sway 5s infinite ease-in-out 1.8s !important;
 }
 
-/* Logo Dimmed vs Powered States */
-.logo-dimmed {
-    opacity: 0.25;
-    filter: grayscale(0.8) blur(0.5px);
-    transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+@keyframes thread-drop {
+    0% { transform: scaleY(0); }
+    100% { transform: scaleY(1); }
 }
-.logo-dimmed .logo-cart-glow {
+
+@keyframes card-spider-drop {
+    0% { transform: translateY(-400px) scale(0.85); opacity: 0; }
+    50% { opacity: 0.3; }
+    100% { transform: translateY(0px) scale(1); opacity: 1; }
+}
+
+@keyframes thread-sway {
+    0%, 100% { transform: scaleY(1) rotate(0deg); }
+    25% { transform: scaleY(1) rotate(-1deg); }
+    75% { transform: scaleY(1) rotate(1deg); }
+}
+
+@keyframes card-spider-sway {
+    0%, 100% { transform: rotate(0deg) translateZ(0px); }
+    25% { transform: rotate(-1deg) translateZ(8px); }
+    75% { transform: rotate(1deg) translateZ(8px); }
+}
+
+/* Light mode overrides for the spider web thread */
+.light-theme .web-thread {
+    background: linear-gradient(to bottom, rgba(15, 118, 110, 0.6), rgba(3, 105, 161, 0.05)) !important;
     box-shadow: none !important;
-    background: #334155 !important;
-}
-
-.logo-powered {
-    animation: neon-flicker-on 1.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
-}
-
-@keyframes neon-flicker-on {
-    0% { opacity: 0.25; filter: grayscale(0.8) blur(0.5px); }
-    10% { opacity: 0.9; filter: grayscale(0.3) blur(0px); }
-    15% { opacity: 0.3; }
-    20% { opacity: 0.95; }
-    25% { opacity: 0.5; }
-    30% { opacity: 1; filter: grayscale(0); }
-    100% { 
-        opacity: 1; 
-        filter: grayscale(0) drop-shadow(0 0 15px rgba(16, 185, 129, 0.5)) drop-shadow(0 0 30px rgba(14, 165, 233, 0.3)); 
-    }
-}
-
-/* Login Card Wrapper Animation */
-.login-card-wrapper {
-    opacity: 0;
-    transform: translateY(50px) scale(0.95) rotateX(10deg);
-    pointer-events: none;
-    transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-    perspective: 1000px;
-    transform-style: preserve-3d;
-}
-
-.login-card-wrapper.card-visible {
-    opacity: 1;
-    transform: translateY(0) scale(1) rotateX(0deg);
-    pointer-events: auto;
-}
-
-/* Light mode overrides for the power switch */
-.light-theme .slider {
-    background-color: #e2e8f0 !important;
-    border-color: rgba(0, 0, 0, 0.06) !important;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-}
-.light-theme .slider:before {
-    background-color: #94a3b8;
-}
-.light-theme input:checked + .slider {
-    background-color: rgba(16, 185, 129, 0.2) !important;
-    border-color: rgba(16, 185, 129, 0.5) !important;
-}
-.light-theme .logo-dimmed {
-    opacity: 0.35;
-    filter: grayscale(0.9);
 }
 </style>
 """
@@ -563,6 +739,16 @@ def get_3d_javascript():
 <script>
 const injectInteractiveEffects = () => {
     const parentDoc = window.parent.document;
+    
+    // Clean up login animation canvas if present
+    const oldCanvasParent = parentDoc.getElementById('login-animation-canvas');
+    if (oldCanvasParent) {
+        oldCanvasParent.remove();
+    }
+    const oldCanvasLocal = document.getElementById('login-animation-canvas');
+    if (oldCanvasLocal) {
+        oldCanvasLocal.remove();
+    }
     
     // Background canvas control
     if (!parentDoc.getElementById('cyber-interactive-bg')) {
@@ -592,22 +778,27 @@ const injectInteractiveEffects = () => {
             mouse.tx = e.clientX;
             mouse.ty = e.clientY;
         });
-        
-        // Money rain definitions
-        const moneyChars = ['$', '€', '₺', '£', '₿'];
-        const numDrops = 110;
-        const drops = [];
-        for (let i = 0; i < numDrops; i++) {
-            drops.push({
+
+        // "Deniz Efekti" - mavi / mor / yeşil dalgalı okyanus katmanları
+        const bubbles = [];
+        const numBubbles = 40;
+        for (let i = 0; i < numBubbles; i++) {
+            bubbles.push({
                 x: Math.random() * width,
-                y: Math.random() * height - height,
-                z: Math.random() * 600,
-                speed: Math.random() * 1.5 + 0.6,
-                char: moneyChars[Math.floor(Math.random() * moneyChars.length)],
-                fontSize: Math.random() * 12 + 10
+                y: Math.random() * height,
+                r: Math.random() * 3 + 1.2,
+                speed: Math.random() * 0.6 + 0.2,
+                drift: (Math.random() - 0.5) * 0.4,
+                alpha: Math.random() * 0.4 + 0.15
             });
         }
-        
+
+        const waveBands = [
+            { yRatio: 0.62, amp: 55, freq: 0.0032, speed: 0.55, hueDark: '16, 185, 129', hueLight: '5, 150, 105' },   // yeşil
+            { yRatio: 0.72, amp: 75, freq: 0.0022, speed: -0.42, hueDark: '14, 165, 233', hueLight: '2, 132, 199' },  // mavi
+            { yRatio: 0.82, amp: 45, freq: 0.0045, speed: 0.7, hueDark: '168, 85, 247', hueLight: '147, 51, 234' }    // mor
+        ];
+
         const animate = () => {
             // Check light mode dynamically from parent document text color
             const mainEl = parentDoc.querySelector('section.main') || parentDoc.body;
@@ -618,61 +809,72 @@ const injectInteractiveEffects = () => {
             if (isLight) {
                 document.body.classList.add('light-theme');
                 document.body.classList.remove('dark-theme');
-                canvas.style.background = '#f8fafc';
-                ctx.fillStyle = 'rgba(248, 250, 252, 0.18)';
+                canvas.style.background = '#f1f7fb';
+                ctx.fillStyle = 'rgba(241, 247, 251, 0.22)';
             } else {
                 document.body.classList.add('dark-theme');
                 document.body.classList.remove('light-theme');
-                canvas.style.background = '#03050a';
-                ctx.fillStyle = 'rgba(3, 5, 10, 0.18)';
+                canvas.style.background = '#040912';
+                ctx.fillStyle = 'rgba(4, 9, 18, 0.22)';
             }
             
             mouse.x += (mouse.tx - mouse.x) * 0.08;
             mouse.y += (mouse.ty - mouse.y) * 0.08;
             
             ctx.fillRect(0, 0, width, height);
-            
-            drops.forEach(d => {
-                d.y += d.speed;
-                
-                if (d.y > height) {
-                    d.y = -50;
-                    d.x = Math.random() * width;
-                    d.char = moneyChars[Math.floor(Math.random() * moneyChars.length)];
+
+            const time = Date.now() * 0.001;
+
+            // Dalgalı deniz katmanlarını çiz (yeşil > mavi > mor)
+            waveBands.forEach((b) => {
+                const yCenter = height * b.yRatio;
+                const hue = isLight ? b.hueLight : b.hueDark;
+                ctx.beginPath();
+                ctx.moveTo(0, height);
+                for (let x = 0; x <= width; x += 12) {
+                    // fareye yakın bölgede hafif dalga yükselmesi (etkileşim)
+                    const distMouse = Math.abs(x - mouse.x);
+                    const mouseLift = Math.max(0, 1 - distMouse / 260) * 18;
+                    const y = yCenter + Math.sin(x * b.freq + time * b.speed) * b.amp - mouseLift;
+                    ctx.lineTo(x, y);
                 }
-                
-                // Mouse interaction: push drops away horizontally
-                const dx = d.x - mouse.x;
-                const dy = d.y - mouse.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < 150) {
-                    const force = (150 - dist) * 0.05;
-                    d.x += (dx / dist) * force;
+                ctx.lineTo(width, height);
+                ctx.closePath();
+
+                const grad = ctx.createLinearGradient(0, yCenter - b.amp, 0, height);
+                grad.addColorStop(0, `rgba(${hue}, ${isLight ? 0.16 : 0.16})`);
+                grad.addColorStop(1, `rgba(${hue}, ${isLight ? 0.02 : 0.01})`);
+                ctx.fillStyle = grad;
+                ctx.fill();
+            });
+
+            // Yükselen deniz kabarcıkları (bubbles)
+            bubbles.forEach(bub => {
+                bub.y -= bub.speed;
+                bub.x += bub.drift;
+                if (bub.y < 0) {
+                    bub.y = height + 10;
+                    bub.x = Math.random() * width;
                 }
-                
-                // 3D Perspective math
-                const fov = 300;
-                const scale = fov / (fov + d.z);
-                const projX = d.x;
-                const projY = d.y;
-                
-                // Opacity based on Z depth: deeper drops are smaller and darker
-                const alpha = (1 - d.z / 600) * (isLight ? 0.14 : 0.18);
-                const size = d.fontSize * scale;
-                
-                ctx.font = `600 ${size}px Outfit, sans-serif`;
-                ctx.fillStyle = isLight ? `rgba(15, 118, 110, ${alpha})` : `rgba(16, 185, 129, ${alpha})`;
-                ctx.fillText(d.char, projX, projY);
+                if (bub.x < 0) bub.x = width;
+                if (bub.x > width) bub.x = 0;
+
+                ctx.beginPath();
+                ctx.arc(bub.x, bub.y, bub.r, 0, Math.PI * 2);
+                ctx.fillStyle = isLight
+                    ? `rgba(2, 132, 199, ${bub.alpha * 0.5})`
+                    : `rgba(125, 211, 252, ${bub.alpha})`;
+                ctx.fill();
             });
             
             // Mouse gradient glow light beam
             const grad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 220);
             if (isLight) {
                 grad.addColorStop(0, 'rgba(3, 105, 161, 0.05)');
-                grad.addColorStop(0.5, 'rgba(15, 118, 110, 0.02)');
+                grad.addColorStop(0.5, 'rgba(147, 51, 234, 0.02)');
             } else {
                 grad.addColorStop(0, 'rgba(14, 165, 233, 0.06)');
-                grad.addColorStop(0.5, 'rgba(16, 185, 129, 0.02)');
+                grad.addColorStop(0.5, 'rgba(168, 85, 247, 0.02)');
             }
             grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
             ctx.fillStyle = grad;
@@ -751,3 +953,667 @@ const injectInteractiveEffects = () => {
 setTimeout(injectInteractiveEffects, 500);
 </script>
 """
+
+def get_login_css():
+    return """
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600;700;800;900&display=swap');
+@import url('https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css');
+
+/* Global resets and font styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+/* Hide default streamlit elements */
+header, [data-testid="stHeader"] {
+    display: none !important;
+}
+footer {
+    display: none !important;
+}
+[data-testid="collapsedControl"] {
+    display: none !important;
+}
+
+html {
+    background: transparent !important;
+}
+
+/* Force full screen background layout - Dark Theme (Default) */
+body {
+    background: url("https://i.pinimg.com/originals/d7/b9/0c/d7b90cc80898e8823455a127945719af.jpg") no-repeat !important;
+    background-size: cover !important;
+    background-position: center !important;
+    min-height: 100vh !important;
+    width: 100vw !important;
+    overflow: hidden !important;
+    transition: background 0.5s ease-in-out !important;
+}
+
+/* Light Theme Background override (Rich Dark Cream & Warm Sand Gradient) */
+body.light-theme {
+    background: linear-gradient(135deg, #ebdcb9 0%, #d8c397 100%) !important;
+    background-image: none !important;
+}
+
+[data-testid="stAppViewContainer"] {
+    background: transparent !important;
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+[data-testid="stMainBlockContainer"] {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    height: 100vh !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+/* Center Horizontal Block */
+div[data-testid="stHorizontalBlock"] {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Middle Column styled as the login card (.wrapper) - Dark Glass (Default) */
+div[data-testid="column"]:has(.logo-container) {
+    width: 420px !important;
+    max-width: 420px !important;
+    flex: none !important;
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%), 
+                      linear-gradient(135deg, rgba(16, 185, 129, 0.4), rgba(14, 165, 233, 0.4), rgba(168, 85, 247, 0.4)) !important;
+    background-origin: border-box !important;
+    background-clip: padding-box, border-box !important;
+    border: 2px solid transparent !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    box-shadow: 0 0 50px rgba(16, 185, 129, 0.15), 0 0 30px rgba(14, 165, 233, 0.12), inset 0 0 25px rgba(255, 255, 255, 0.04) !important;
+    color: #fff !important;
+    border-radius: 16px !important;
+    padding: 40px 40px !important;
+    z-index: 10 !important;
+    position: relative !important;
+    transition: all 0.5s ease !important;
+    animation: float-card 6s ease-in-out infinite !important;
+}
+
+/* Light Theme overrides for card - Prominent Cream Glass */
+body.light-theme div[data-testid="column"]:has(.logo-container) {
+    background-image: linear-gradient(135deg, rgba(253, 251, 247, 0.96) 0%, rgba(248, 245, 235, 0.88) 100%), 
+                      linear-gradient(135deg, rgba(16, 185, 129, 0.5), rgba(14, 165, 233, 0.5)) !important;
+    border: 2px solid transparent !important;
+    box-shadow: 0 15px 35px rgba(10, 15, 29, 0.18), 0 0 25px rgba(14, 165, 233, 0.15), inset 0 0 20px rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Force absolute black text in light theme for all elements inside the login card */
+body.light-theme div[data-testid="column"]:has(.logo-container) * {
+    color: #000000 !important;
+}
+/* Keep submit button text white */
+body.light-theme div[data-testid="column"]:has(.logo-container) div.stButton button,
+body.light-theme div[data-testid="column"]:has(.logo-container) div.stButton button * {
+    color: #ffffff !important;
+}
+/* Keep links blue */
+body.light-theme div[data-testid="column"]:has(.logo-container) a,
+body.light-theme div[data-testid="column"]:has(.logo-container) a * {
+    color: #0284c7 !important;
+}
+
+/* Hide first and third columns */
+div[data-testid="column"]:not(:has(.logo-container)) {
+    display: none !important;
+}
+
+/* Form Title styling - Dynamic Color Shift Gradient */
+div[data-testid="column"]:has(.logo-container) h1 {
+    font-size: 36px !important;
+    text-align: center !important;
+    margin-bottom: 20px !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.5px !important;
+    background: linear-gradient(-45deg, #10b981, #0ea5e9, #a855f7, #10b981) !important;
+    background-size: 300% 300% !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    animation: text-gradient 6s ease infinite !important;
+}
+
+/* Input container box */
+div[data-testid="stTextInput"] {
+    position: relative !important;
+    width: 100% !important;
+    height: 48px !important;
+    margin: 12px 0 !important;
+    background: transparent !important;
+}
+
+/* Hide input label */
+div[data-testid="stTextInput"] label {
+    display: none !important;
+}
+
+/* BaseWeb elements resets */
+div[data-testid="stTextInput"] > div[data-baseweb="input"] {
+    background: transparent !important;
+    border: none !important;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+/* The actual input field - Dark Theme */
+div[data-testid="stTextInput"] input {
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+    border: 2px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 12px !important;
+    font-size: 15px !important;
+    color: #fff !important;
+    padding: 12px 42px 12px 14px !important;
+    outline: none !important;
+    box-shadow: none !important;
+    transition: all 0.22s ease !important;
+}
+div[data-testid="stTextInput"] input::placeholder {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+div[data-testid="stTextInput"] input:focus {
+    border-color: #0ea5e9 !important;
+    box-shadow: 0 0 15px rgba(14, 165, 233, 0.45) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Light Theme overrides for inputs */
+body.light-theme div[data-testid="stTextInput"] input {
+    background: #faf8f2 !important;
+    border: 2px solid rgba(10, 15, 29, 0.3) !important;
+    color: #0a0f1d !important;
+    font-weight: 500 !important;
+}
+body.light-theme div[data-testid="stTextInput"] input::placeholder {
+    color: rgba(10, 15, 29, 0.65) !important;
+}
+body.light-theme div[data-testid="stTextInput"] input:focus {
+    border-color: #0ea5e9 !important;
+    box-shadow: 0 0 12px rgba(14, 165, 233, 0.35) !important;
+    background: #ffffff !important;
+}
+
+/* Set position relative for icon placement */
+div[data-testid="stTextInput"] > div {
+    position: relative !important;
+}
+
+/* Username Icon */
+div[data-testid="stTextInput"]:has(input#login_user_input) > div::after {
+    content: "\\eec4" !important;
+    font-family: 'boxicons' !important;
+    position: absolute !important;
+    right: 20px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    font-size: 20px !important;
+    color: #fff !important;
+    pointer-events: none !important;
+}
+
+/* Password Icon */
+div[data-testid="stTextInput"]:has(input#login_pwd_input) > div::after {
+    content: "\\eea7" !important;
+    font-family: 'boxicons' !important;
+    position: absolute !important;
+    right: 20px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    font-size: 20px !important;
+    color: #fff !important;
+    pointer-events: none !important;
+}
+
+body.light-theme div[data-testid="stTextInput"] > div::after {
+    color: #0a0f1d !important;
+}
+
+/* Remember Forgot Section - Dark */
+.remember-forgot {
+    display: flex !important;
+    justify-content: space-between !important;
+    font-size: 14px !important;
+    margin: 8px 0 12px !important;
+    color: #fff !important;
+}
+body.light-theme .remember-forgot {
+    color: #0a0f1d !important;
+    font-weight: 500 !important;
+}
+
+.remember-forgot label {
+    display: flex !important;
+    align-items: center !important;
+    cursor: pointer !important;
+}
+
+.remember-forgot label input {
+    accent-color: #fff !important;
+    margin-right: 5px !important;
+    cursor: pointer !important;
+}
+body.light-theme .remember-forgot label input {
+    accent-color: #0a0f1d !important;
+}
+
+.remember-forgot a {
+    color: #fff !important;
+    text-decoration: none !important;
+}
+body.light-theme .remember-forgot a {
+    color: #0284c7 !important;
+    font-weight: 600 !important;
+}
+.remember-forgot a:hover {
+    text-decoration: underline !important;
+}
+
+/* Submit Button - Dark Theme */
+div.stButton button {
+    width: 100% !important;
+    height: 45px !important;
+    background: #fff !important;
+    border: none !important;
+    outline: none !important;
+    border-radius: 40px !important;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15) !important;
+    cursor: pointer !important;
+    font-size: 16px !important;
+    color: #111 !important;
+    font-weight: 600 !important;
+    position: relative !important;
+    overflow: hidden !important;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+div.stButton button::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: -100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent) !important;
+    transition: 0.5s ease !important;
+}
+div.stButton button:hover {
+    background: #fff !important;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6) !important;
+    transform: translateY(-2px) !important;
+}
+div.stButton button:hover::before {
+    left: 100% !important;
+}
+div.stButton button:focus, div.stButton button:active {
+    border: none !important;
+    outline: none !important;
+    background: #fff !important;
+    color: #333 !important;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Light Theme Button */
+body.light-theme div.stButton button {
+    background: #0a0f1d !important;
+    color: #fff !important;
+    box-shadow: 0 4px 15px rgba(10, 15, 29, 0.25) !important;
+}
+body.light-theme div.stButton button:hover {
+    background: #000000 !important;
+    box-shadow: 0 6px 20px rgba(10, 15, 29, 0.4) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Register link section */
+.register-link {
+    text-align: center !important;
+    font-size: 14px !important;
+    margin: 20px 0 15px !important;
+    color: #fff !important;
+}
+body.light-theme .register-link {
+    color: #0a0f1d !important;
+}
+
+.register-link p a {
+    color: #fff !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+}
+body.light-theme .register-link p a {
+    color: #0284c7 !important;
+    font-weight: 700 !important;
+}
+.register-link p a:hover {
+    text-decoration: underline !important;
+}
+
+/* Keyframes for animations */
+@keyframes float-card {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Hide password visibility screen reader helper text but keep icon */
+div[data-testid="stTextInput"] button {
+    color: transparent !important;
+    font-size: 0 !important;
+    background: transparent !important;
+    border: none !important;
+}
+div[data-testid="stTextInput"] button div,
+div[data-testid="stTextInput"] button span,
+div[data-testid="stTextInput"] [aria-live="polite"] {
+    display: none !important;
+}
+div[data-testid="stTextInput"] button svg {
+    color: #fff !important;
+    width: 20px !important;
+    height: 20px !important;
+}
+body.light-theme div[data-testid="stTextInput"] button svg {
+    color: #0a0f1d !important;
+}
+
+/* Logo styling with high specificity */
+.logo-container .logo-text,
+div[data-testid="column"]:has(.logo-container) .logo-container span.logo-text,
+div[data-testid="column"]:has(.logo-container) span.logo-text {
+    color: #ffffff !important;
+}
+
+body.light-theme .logo-container .logo-text,
+body.light-theme div[data-testid="column"]:has(.logo-container) .logo-container span.logo-text,
+body.light-theme div[data-testid="column"]:has(.logo-container) span.logo-text {
+    color: #000000 !important;
+}
+
+/* Password Hint styling */
+.password-hint {
+    color: rgba(255, 255, 255, 0.45) !important;
+}
+body.light-theme .password-hint {
+    color: rgba(10, 15, 29, 0.70) !important;
+}
+
+/* Force absolute black text in light theme for all elements */
+body.light-theme .remember-forgot,
+body.light-theme .remember-forgot label,
+body.light-theme .register-link,
+body.light-theme .register-link p,
+body.light-theme .register-link p strong {
+    color: #000000 !important;
+}
+
+@keyframes text-gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+</style>
+
+<!-- Extra light-theme visibility fixes inserted by assistant -->
+<style>
+/* Ensure readable text and visible controls in light theme */
+body.light-theme, body.light-theme * {
+    color: #0a0f1d !important;
+}
+body.light-theme a, body.light-theme a * {
+    color: #0369a1 !important;
+}
+body.light-theme .logo-container {
+    z-index: 12 !important;
+    margin-bottom: 18px !important;
+}
+body.light-theme .logo-emoji-circle {
+    background: linear-gradient(135deg,#10b981 0%,#0ea5e9 100%) !important;
+    box-shadow: 0 0 12px rgba(16,185,129,0.18) !important;
+    color: #ffffff !important;
+}
+body.light-theme div.stButton button,
+body.light-theme div.stButton button * {
+    background: linear-gradient(90deg,#0a0f1d,#06202a) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+body.light-theme div[data-testid="stTextInput"] input {
+    background: #ffffff !important;
+    color: #0a0f1d !important;
+    border: 1px solid rgba(10,15,29,0.12) !important;
+}
+body.light-theme .remember-forgot {
+    color: #0a0f1d !important;
+}
+</style>
+"""
+
+def get_login_javascript():
+    return """
+<script>
+const injectLoginAnimation = () => {
+    const mainDoc = window.parent.document;
+    const mainWin = window.parent;
+    
+    // Check if canvas already exists to avoid duplicates
+    if (!mainDoc.getElementById('login-animation-canvas')) {
+        const canvas = mainDoc.createElement('canvas');
+        canvas.id = 'login-animation-canvas';
+        canvas.style.position = 'fixed';
+        canvas.style.top = '0';
+        canvas.style.left = '0';
+        canvas.style.width = '100vw';
+        canvas.style.height = '100vh';
+        canvas.style.zIndex = '1'; // Layered between background image (0) and streamlit content (2)
+        canvas.style.pointerEvents = 'none';
+        mainDoc.body.appendChild(canvas);
+        
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = mainWin.innerWidth;
+        let height = canvas.height = mainWin.innerHeight;
+        
+        mainWin.addEventListener('resize', () => {
+            width = canvas.width = mainWin.innerWidth;
+            height = canvas.height = mainWin.innerHeight;
+        });
+        
+        // Fare takip şeridi noktaları dizisi
+        const trailPoints = [];
+        
+        mainDoc.addEventListener('mousemove', (e) => {
+            // Fare hareket ettikçe noktaları ve ilk opaklık değerini ekliyoruz
+            trailPoints.push({
+                x: e.clientX,
+                y: e.clientY,
+                alpha: 1.0
+            });
+            
+            // Performans için şerit uzunluğunu sınırlandırıyoruz
+            if (trailPoints.length > 25) {
+                trailPoints.shift();
+            }
+        });
+        
+        const animate = () => {
+            if (!mainDoc.body.contains(canvas)) return;
+            
+            // Check theme dynamically from parent window document
+            const mainEl = mainDoc.documentElement || mainDoc.body;
+            const style = mainWin.getComputedStyle(mainEl);
+            const textColor = style.getPropertyValue('--text-color').trim();
+            const bgColor = style.getPropertyValue('--background-color').trim();
+            
+            // Matematiksel parlaklık hesabı yapan fonksiyon
+            const getBrightness = (colorStr) => {
+                if (!colorStr) return 0;
+                const rgb = colorStr.match(/\\d+/g);
+                if (rgb && rgb.length >= 3) {
+                    return (parseInt(rgb[0]) * 0.299 + parseInt(rgb[1]) * 0.587 + parseInt(rgb[2]) * 0.114);
+                }
+                if (colorStr.startsWith('#')) {
+                    let hex = colorStr.slice(1);
+                    if (hex.length === 3) hex = hex.split('').map(x => x + x).join('');
+                    if (hex.length === 6) {
+                        const r = parseInt(hex.slice(0, 2), 16);
+                        const g = parseInt(hex.slice(2, 4), 16);
+                        const b = parseInt(hex.slice(4, 6), 16);
+                        return (r * 0.299 + g * 0.587 + b * 0.114);
+                    }
+                }
+                return 0;
+            };
+            
+            // Eğer arka plan rengi aydınlıksa (> 120 parlaklık), kesinlikle açık moddadır
+            const bgBrightness = getBrightness(bgColor);
+            const textBrightness = getBrightness(textColor);
+            
+            let isLight = false;
+            if (bgBrightness > 120) {
+                isLight = true;
+            } else if (textColor.includes('49') || textColor.includes('51') || textColor.toLowerCase().includes('31333f')) {
+                isLight = true;
+            }
+            
+            if (isLight) {
+                mainDoc.body.classList.add('light-theme');
+                mainDoc.body.classList.remove('dark-theme');
+                document.body.classList.add('light-theme');
+                document.body.classList.remove('dark-theme');
+            } else {
+                mainDoc.body.classList.add('dark-theme');
+                mainDoc.body.classList.remove('light-theme');
+                document.body.classList.add('dark-theme');
+                document.body.classList.remove('light-theme');
+            }
+            
+            ctx.clearRect(0, 0, width, height);
+            
+            // Waving flag-like gradient mesh bands (Vibrant Green & Blue themes)
+            const drawWavingWaves = () => {
+                const time = Date.now() * 0.001; // stable clock
+                
+                const bands = [
+                    {
+                        yCenter: height * 0.45,
+                        amp: 70,
+                        freq: 0.003,
+                        speed: 0.8,
+                        colorDarkStart: 'rgba(16, 185, 129, 0.18)',  // Logodaki Zümrüt Yeşili
+                        colorDarkEnd: 'rgba(4, 120, 87, 0.03)',
+                        colorLightStart: 'rgba(16, 185, 129, 0.35)', // Canlı Yeşil (Light)
+                        colorLightEnd: 'rgba(16, 185, 129, 0.05)'
+                    },
+                    {
+                        yCenter: height * 0.52,
+                        amp: 90,
+                        freq: 0.002,
+                        speed: -0.6,
+                        colorDarkStart: 'rgba(14, 165, 233, 0.15)',  // Parlak Sky Mavi
+                        colorDarkEnd: 'rgba(30, 58, 138, 0.02)',
+                        colorLightStart: 'rgba(14, 165, 233, 0.35)', // Canlı Sky Mavi (Light)
+                        colorLightEnd: 'rgba(14, 165, 233, 0.05)'
+                    },
+                    {
+                        yCenter: height * 0.6,
+                        amp: 60,
+                        freq: 0.004,
+                        speed: 1.1,
+                        colorDarkStart: 'rgba(168, 85, 247, 0.12)',  // Canlı Eflatun/Mor
+                        colorDarkEnd: 'rgba(0, 0, 0, 0)',
+                        colorLightStart: 'rgba(168, 85, 247, 0.30)', // Canlı Eflatun (Light)
+                        colorLightEnd: 'rgba(168, 85, 247, 0.02)'
+                    }
+                ];
+                
+                bands.forEach(b => {
+                    ctx.beginPath();
+                    ctx.moveTo(0, height);
+                    for (let x = 0; x <= width; x += 15) {
+                        const y = b.yCenter + Math.sin(x * b.freq + time * b.speed) * b.amp;
+                        ctx.lineTo(x, y);
+                    }
+                    ctx.lineTo(width, height);
+                    ctx.closePath();
+                    
+                    // Dikey geçişli gradyan oluştur
+                    const grad = ctx.createLinearGradient(0, b.yCenter - b.amp, 0, height);
+                    if (isLight) {
+                        grad.addColorStop(0, b.colorLightStart);
+                        grad.addColorStop(1, b.colorLightEnd);
+                    } else {
+                        grad.addColorStop(0, b.colorDarkStart);
+                        grad.addColorStop(1, b.colorDarkEnd);
+                    }
+                    
+                    ctx.fillStyle = grad;
+                    ctx.fill();
+                });
+            };
+            drawWavingWaves();
+            
+            // Fare takip şeridini (ribbon) çiz
+            if (trailPoints.length > 1) {
+                ctx.save();
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                
+                // Neon parlama efekti için gölge ayarları (Hafif ve hızlı)
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = isLight ? '#0ea5e9' : '#10b981';
+                
+                for (let i = 1; i < trailPoints.length; i++) {
+                    const p1 = trailPoints[i - 1];
+                    const p2 = trailPoints[i];
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(p1.x, p1.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    
+                    const ratio = i / trailPoints.length; // Kuyruktan imlece doğru oran (0-1)
+                    ctx.lineWidth = ratio * 7 + 1.5; // Kuyruğa doğru incelme
+                    
+                    // Şerit opaklık sönümlemesi
+                    const alpha = p2.alpha * ratio;
+                    ctx.strokeStyle = isLight ? `rgba(14, 165, 233, ${alpha})` : `rgba(16, 185, 129, ${alpha})`;
+                    
+                    ctx.stroke();
+                }
+                ctx.restore();
+            }
+            
+            // Şerit noktalarının opaklığını azalt ve bitenleri diziden çıkar
+            for (let i = trailPoints.length - 1; i >= 0; i--) {
+                trailPoints[i].alpha -= 0.035; // Kaybolma hızı
+                if (trailPoints[i].alpha <= 0) {
+                    trailPoints.splice(i, 1);
+                }
+            }
+            
+            requestAnimationFrame(animate);
+        };
+        animate();
+    }
+};
+
+setTimeout(injectLoginAnimation, 200);
+</script>
+"""
+
+

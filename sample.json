@@ -1,0 +1,20 @@
+{
+  "Tenure": 12,
+  "PreferredLoginDevice": "Mobile",
+  "CityTier": 2,
+  "WarehouseToHome": 3.2,
+  "PreferredPaymentMode": "Card",
+  "Gender": "Male",
+  "HourSpendOnApp": 2.5,
+  "NumberOfDeviceRegistered": 1,
+  "PreferedOrderCat": "Electronics",
+  "SatisfactionScore": 4,
+  "MaritalStatus": "Single",
+  "NumberOfAddress": 1,
+  "Complain": 0,
+  "OrderAmountHikeFromlastYear": 0.1,
+  "CouponUsed": 0,
+  "OrderCount": 5,
+  "DaySinceLastOrder": 10,
+  "CashbackAmount": 0.0
+}

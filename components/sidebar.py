@@ -19,7 +19,8 @@ def render_sidebar():
             "⭐ NPS & Müşteri Bağlılık Ligi",
             "🔍 Müşteri Analiz Paneli",
             "👥 Müşteri Segmentasyonu",
-            "📋 Geçmiş Tahmin Kayıtları"
+            "📋 Geçmiş Tahmin Kayıtları",
+            "🔌 Sistem Entegrasyonları"
         ]
         
         default_index = 0
@@ -35,6 +36,12 @@ def render_sidebar():
         
         st.session_state.active_menu = selected_menu
         
+        st.markdown("---")
+        if st.button("🚪 Çıkış Yap", width='stretch', key="logout_btn"):
+            st.session_state.logged_in = False
+            st.session_state.just_logged_out = True
+            st.rerun()
+            
         st.markdown("---")
         st.markdown("""
         <div style="font-size: 12px; color: #64748b; text-align: center;">

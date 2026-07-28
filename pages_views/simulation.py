@@ -70,5 +70,5 @@ def render_simulation_page(df_synthetic):
         title="Simülasyon Öncesi ve Sonrası Churn Karşılaştırması",
         color_discrete_map={"Mevcut": "#ef4444", "Hedef": "#10b981"}
     )
-    st.plotly_chart(apply_plotly_theme(fig_sim), use_container_width=True)
+    st.plotly_chart(apply_plotly_theme(fig_sim), width='stretch')
     st.markdown('</div>', unsafe_allow_html=True)

@@ -73,7 +73,7 @@ def render_dashboard_page(df_synthetic):
             hole=0.45
         )
         fig_pie.update_traces(labels=['Sadık Müşteri', 'Kayıp Riski Var'], textinfo='percent+label')
-        st.plotly_chart(apply_plotly_theme(fig_pie), use_container_width=True)
+        st.plotly_chart(apply_plotly_theme(fig_pie), width='stretch')
         st.markdown('</div>', unsafe_allow_html=True)
         
     with col2:
@@ -88,10 +88,10 @@ def render_dashboard_page(df_synthetic):
             barmode='overlay',
             opacity=0.8
         )
-        st.plotly_chart(apply_plotly_theme(fig_bar), use_container_width=True)
+        st.plotly_chart(apply_plotly_theme(fig_bar), width='stretch')
         st.markdown('</div>', unsafe_allow_html=True)
         
     st.markdown('<div class="custom-card">', unsafe_allow_html=True)
     st.markdown("<h4 style='color: #f8fafc; margin-bottom: 15px;'>Müşteri Segment Veri Özeti</h4>", unsafe_allow_html=True)
-    st.dataframe(df_synthetic.head(10), use_container_width=True)
+    st.dataframe(df_synthetic.head(10), width='stretch')
     st.markdown('</div>', unsafe_allow_html=True)

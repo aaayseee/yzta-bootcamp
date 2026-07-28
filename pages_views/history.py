@@ -15,7 +15,7 @@ def render_history_page():
     
     if len(df_hist) > 0:
         st.markdown('<div class="custom-card">', unsafe_allow_html=True)
-        st.dataframe(df_hist, use_container_width=True)
+        st.dataframe(df_hist, width='stretch')
         
         col_dl1, col_dl2 = st.columns([1, 4])
         with col_dl1:
@@ -25,7 +25,7 @@ def render_history_page():
                 data=csv_data,
                 file_name="loyalcart_churn_tahmin_gecmisi.csv",
                 mime="text/csv",
-                use_container_width=True
+                width='stretch'
             )
         with col_dl2:
             if st.button("🗑️ Geçmişi Temizle"):
