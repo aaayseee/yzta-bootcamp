@@ -51,12 +51,17 @@ if not st.session_state.logged_in:
         password = st.text_input("Giriş Şifresi", type="password", key="login_pwd_input", label_visibility="collapsed")
         st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
         if st.button("Sisteme Giriş Yap 🔐", use_container_width=True):
-            if password == "1234":
+            if password == "12345":
                 st.session_state.logged_in = True
                 st.rerun()
             else:
                 st.error("❌ Hatalı şifre! Lütfen tekrar deneyin.")
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown("""
+        <p style="text-align: center; color: #64748b; font-size: 13px; margin: 15px 0 0 0;">
+            🔑 Şifre İpucu: <strong>12345</strong>
+        </p>
+        </div>
+        """, unsafe_allow_html=True)
     st.stop()
 
 # 5. Load Data & Render Sidebar
