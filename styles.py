@@ -423,6 +423,135 @@ div[data-testid="stRadio"] div[role="radiogroup"] label div[dir="ltr"] {
 .light-theme div[data-testid="stRadio"] div[role="radiogroup"] label p {
     color: #1e293b !important;
 }
+
+/* ====================================================
+   INTERACTIVE POWER SWITCH & NEON LOGIN ANIMATION
+   ==================================================== */
+.power-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 25px;
+}
+.power-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+    transition: all 0.4s ease;
+}
+
+/* Switch Styles */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 66px;
+    height: 38px;
+}
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #0c101b !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-radius: 38px !important;
+    transition: .4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+}
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 28px;
+    width: 28px;
+    left: 4px;
+    bottom: 4px;
+    background-color: #334155;
+    border-radius: 50%;
+    transition: .4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+}
+
+input:checked + .slider {
+    background-color: rgba(16, 185, 129, 0.15) !important;
+    border-color: rgba(16, 185, 129, 0.4) !important;
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.2), inset 0 2px 5px rgba(0,0,0,0.2);
+}
+input:checked + .slider:before {
+    transform: translateX(28px);
+    background-color: #10b981;
+    box-shadow: 0 0 12px #10b981, 0 0 25px rgba(16, 185, 129, 0.6);
+}
+
+/* Logo Dimmed vs Powered States */
+.logo-dimmed {
+    opacity: 0.25;
+    filter: grayscale(0.8) blur(0.5px);
+    transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.logo-dimmed .logo-cart-glow {
+    box-shadow: none !important;
+    background: #334155 !important;
+}
+
+.logo-powered {
+    animation: neon-flicker-on 1.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+@keyframes neon-flicker-on {
+    0% { opacity: 0.25; filter: grayscale(0.8) blur(0.5px); }
+    10% { opacity: 0.9; filter: grayscale(0.3) blur(0px); }
+    15% { opacity: 0.3; }
+    20% { opacity: 0.95; }
+    25% { opacity: 0.5; }
+    30% { opacity: 1; filter: grayscale(0); }
+    100% { 
+        opacity: 1; 
+        filter: grayscale(0) drop-shadow(0 0 15px rgba(16, 185, 129, 0.5)) drop-shadow(0 0 30px rgba(14, 165, 233, 0.3)); 
+    }
+}
+
+/* Login Card Wrapper Animation */
+.login-card-wrapper {
+    opacity: 0;
+    transform: translateY(50px) scale(0.95) rotateX(10deg);
+    pointer-events: none;
+    transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    perspective: 1000px;
+    transform-style: preserve-3d;
+}
+
+.login-card-wrapper.card-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotateX(0deg);
+    pointer-events: auto;
+}
+
+/* Light mode overrides for the power switch */
+.light-theme .slider {
+    background-color: #e2e8f0 !important;
+    border-color: rgba(0, 0, 0, 0.06) !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+.light-theme .slider:before {
+    background-color: #94a3b8;
+}
+.light-theme input:checked + .slider {
+    background-color: rgba(16, 185, 129, 0.2) !important;
+    border-color: rgba(16, 185, 129, 0.5) !important;
+}
+.light-theme .logo-dimmed {
+    opacity: 0.35;
+    filter: grayscale(0.9);
+}
 </style>
 """
 
