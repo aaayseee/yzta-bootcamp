@@ -80,82 +80,119 @@ def render_customer_analysis_page(df_synthetic):
         }
         
         with st.spinner("AI Modeli Tahmin Yapıyor..."):
+            api_success = False
+            prob = 0.0
+            prediction = 0
+            
+            # 1. Attempt to request from the local/hosted FastAPI backend API
             try:
-                response = requests.post("http://127.0.0.1:8000/predict", json=payload, timeout=5)
+                response = requests.post("http://127.0.0.1:8000/predict", json=payload, timeout=2)
                 if response.status_code == 200:
                     res = response.json()
                     prob = res["churn_probability"] * 100
                     prediction = res["churn_prediction"]
+                    api_success = True
+            except Exception:
+                pass
+                
+            # 2. Fallback: If backend is offline or unreachable (e.g. deployed in serverless/Streamlit Cloud), run prediction locally
+            if not api_success:
+                try:
+                    from main import model, MusteriVerisi, save_prediction
+                    import sklearn
                     
-                    risk_status = "YÜKSEK CHURN RİSKİ (Kayıp Olabilir)" if prediction == 1 else "DÜŞÜK CHURN RİSKİ (Sadık Müşteri)"
-                    action = "Özel İndirim Kuponu & VIP Müşteri Temsilcisi Ataması" if prediction == 1 else "Sadakat Puanı & Standart Kampanya Bildirimi"
+                    veri = MusteriVerisi(**payload)
+                    raw_df = pd.DataFrame([veri.model_dump()])
+                    df_encoded = pd.get_dummies(raw_df)
+                    expected_features = list(model.feature_names_in_)
+                    df_final = df_encoded.reindex(columns=expected_features, fill_value=0)
                     
-                    target_cust = selected_customer_id if selected_customer_id != "Manuel Giriş Yap" else "Manuel Test Müşterisi"
-                    save_to_history(target_cust, risk_status, prob, tenure, complain, action)
+                    tahmin = model.predict(df_final)
+                    olasilik = float(model.predict_proba(df_final)[0][1])
                     
-                    # Trigger Integration Webhooks/Alerts dynamically
-                    if "integration_logs" not in st.session_state:
-                        st.session_state.integration_logs = []
-                    
-                    if prediction == 1:
-                        # Telegram Log
-                        st.session_state.integration_logs.insert(0, {
-                            "Tarih": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                            "Entegrasyon": "Telegram Bot",
-                            "Etkinlik": f"Yüksek Churn Riski Uyarısı Gönderildi ({target_cust}, Risk: %{prob:.1f})",
-                            "Durum": "🟢 Başarılı"
-                        })
-                        # WhatsApp Log
-                        st.session_state.integration_logs.insert(0, {
-                            "Tarih": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                            "Entegrasyon": "WhatsApp Bot",
-                            "Etkinlik": f"Otomatik Geri Kazanım Mesajı Gönderildi ({target_cust}, Şablon: Kuponlu Geri Kazanım)",
-                            "Durum": "🟢 Başarılı"
-                        })
-                        # Zendesk Log
-                        ticket_id = random.randint(10000, 99999)
-                        st.session_state.integration_logs.insert(0, {
-                            "Tarih": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                            "Entegrasyon": "Zendesk",
-                            "Etkinlik": f"Müşteri Destek & Geri Kazanım Bileti Açıldı (Ticket: #TC-{ticket_id})",
-                            "Durum": "🟢 Başarılı"
-                        })
-                        st.toast("✈️ [Telegram] Yüksek risk uyarısı gruba iletildi!")
-                        st.toast("💬 [WhatsApp] Müşteriye otomatik geri kazanım mesajı gönderildi!")
-                        st.toast(f"🎫 [Zendesk] Bilet #TC-{ticket_id} oluşturuldu!")
-                    else:
-                        # Log regular synching (Regular customer, low risk)
-                        st.session_state.integration_logs.insert(0, {
-                            "Tarih": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                            "Entegrasyon": "Telegram Bot",
-                            "Etkinlik": f"Müşteri Tarandı - Düşük Risk ({target_cust}, Risk: %{prob:.1f})",
-                            "Durum": "🟢 Başarılı"
-                        })
-                        st.toast("🔍 [Telegram] Tarama özeti bot grubuna iletildi (Düşük Risk).")
-                    
-                    card_class = "risk" if prediction == 1 else "loyal"
-                    icon = "🚨" if prediction == 1 else "✅"
-                    
-                    st.markdown(f"""
-                    <div class="result-card {card_class}">
-                        <h3 style="margin: 0 0 10px 0; display: flex; align-items: center; gap: 10px;">
-                            <span>{icon}</span> {risk_status}
-                        </h3>
-                        <p style="font-size: 18px; margin: 5px 0;">Tahmin Edilen Churn İhtimali: <strong>%{prob:.1f}</strong></p>
-                        <p style="font-size: 15px; margin: 10px 0 0 0; opacity: 0.9;"><strong>Önerilen Aksiyon:</strong> {action}</p>
-                    </div>
-                    """, unsafe_allow_html=True)
-                    
-                    fig_gauge = px.pie(
-                        values=[prob, 100 - prob], 
-                        names=['Kayıp Riski', 'Güvenli Bölge'],
-                        hole=0.7,
-                        color_discrete_sequence=['#ef4444' if prediction == 1 else '#10b981', '#1e293b']
-                    )
-                    fig_gauge.update_layout(title="Müşteri Churn Risk Göstergesi")
-                    st.plotly_chart(apply_plotly_theme(fig_gauge), width='stretch')
-                    
+                    try:
+                        save_prediction(
+                            customer_id=None,
+                            features=veri.model_dump(),
+                            prediction=int(tahmin[0]),
+                            probability=olasilik,
+                            model_version=f"sklearn-{sklearn.__version__}"
+                        )
+                    except Exception:
+                        pass
+                        
+                    prob = olasilik * 100
+                    prediction = int(tahmin[0])
+                    api_success = True
+                except Exception as e:
+                    st.error(f"Tahmin yapılamadı (Model yükleme hatası): {e}")
+                    st.stop()
+            
+            if api_success:
+                risk_status = "YÜKSEK CHURN RİSKİ (Kayıp Olabilir)" if prediction == 1 else "DÜŞÜK CHURN RİSKİ (Sadık Müşteri)"
+                action = "Özel İndirim Kuponu & VIP Müşteri Temsilcisi Ataması" if prediction == 1 else "Sadakat Puanı & Standart Kampanya Bildirimi"
+                
+                target_cust = selected_customer_id if selected_customer_id != "Manuel Giriş Yap" else "Manuel Test Müşterisi"
+                save_to_history(target_cust, risk_status, prob, tenure, complain, action)
+                
+                # Trigger Integration Webhooks/Alerts dynamically
+                if "integration_logs" not in st.session_state:
+                    st.session_state.integration_logs = []
+                
+                if prediction == 1:
+                    # Telegram Log
+                    st.session_state.integration_logs.insert(0, {
+                        "Tarih": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                        "Entegrasyon": "Telegram Bot",
+                        "Etkinlik": f"Yüksek Churn Riski Uyarısı Gönderildi ({target_cust}, Risk: %{prob:.1f})",
+                        "Durum": "🟢 Başarılı"
+                    })
+                    # WhatsApp Log
+                    st.session_state.integration_logs.insert(0, {
+                        "Tarih": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                        "Entegrasyon": "WhatsApp Bot",
+                        "Etkinlik": f"Otomatik Geri Kazanım Mesajı Gönderildi ({target_cust}, Şablon: Kuponlu Geri Kazanım)",
+                        "Durum": "🟢 Başarılı"
+                    })
+                    # Zendesk Log
+                    ticket_id = random.randint(10000, 99999)
+                    st.session_state.integration_logs.insert(0, {
+                        "Tarih": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                        "Entegrasyon": "Zendesk",
+                        "Etkinlik": f"Müşteri Destek & Geri Kazanım Bileti Açıldı (Ticket: #TC-{ticket_id})",
+                        "Durum": "🟢 Başarılı"
+                    })
+                    st.toast("✈️ [Telegram] Yüksek risk uyarısı gruba iletildi!")
+                    st.toast("💬 [WhatsApp] Müşteriye otomatik geri kazanım mesajı gönderildi!")
+                    st.toast(f"🎫 [Zendesk] Bilet #TC-{ticket_id} oluşturuldu!")
                 else:
-                    st.error(f"Backend Hata Döndürdü: Status Code {response.status_code}")
-            except Exception as e:
-                st.error(f"FastAPI Sunucusuna Ulaşılamadı (main.py çalışıyor mu?): {e}")
+                    # Log regular synching (Regular customer, low risk)
+                    st.session_state.integration_logs.insert(0, {
+                        "Tarih": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                        "Entegrasyon": "Telegram Bot",
+                        "Etkinlik": f"Müşteri Tarandı - Düşük Risk ({target_cust}, Risk: %{prob:.1f})",
+                        "Durum": "🟢 Başarılı"
+                    })
+                    st.toast("🔍 [Telegram] Tarama özeti bot grubuna iletildi (Düşük Risk).")
+                
+                card_class = "risk" if prediction == 1 else "loyal"
+                icon = "🚨" if prediction == 1 else "✅"
+                
+                st.markdown(f"""
+                <div class="result-card {card_class}">
+                    <h3 style="margin: 0 0 10px 0; display: flex; align-items: center; gap: 10px;">
+                        <span>{icon}</span> {risk_status}
+                    </h3>
+                    <p style="font-size: 18px; margin: 5px 0;">Tahmin Edilen Churn İhtimali: <strong>%{prob:.1f}</strong></p>
+                    <p style="font-size: 15px; margin: 10px 0 0 0; opacity: 0.9;"><strong>Önerilen Aksiyon:</strong> {action}</p>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                fig_gauge = px.pie(
+                    values=[prob, 100 - prob], 
+                    names=['Kayıp Riski', 'Güvenli Bölge'],
+                    hole=0.7,
+                    color_discrete_sequence=['#ef4444' if prediction == 1 else '#10b981', '#1e293b']
+                )
+                fig_gauge.update_layout(title="Müşteri Churn Risk Göstergesi")
+                st.plotly_chart(apply_plotly_theme(fig_gauge), width='stretch')
