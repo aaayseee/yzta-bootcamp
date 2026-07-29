@@ -7,7 +7,9 @@ import streamlit as st
 
 from components.plotly_theme import apply_plotly_theme
 from db.repository import save_prediction
+from db.security import record_integration_event
 from prediction_service import predict_churn
+from services.telegram import TelegramError, send_telegram_message
 
 
 def render_customer_analysis_page(df_synthetic):
@@ -208,6 +210,43 @@ def render_customer_analysis_page(df_synthetic):
                 return
 
     probability_percent = outcome["probability"] * 100
+    telegram_token = os.getenv("TELEGRAM_BOT_TOKEN", "")
+    telegram_chat_id = os.getenv("TELEGRAM_CHAT_ID", "")
+    telegram_threshold = float(os.getenv("TELEGRAM_CHURN_THRESHOLD", "70"))
+    if (
+        outcome["prediction"] == 1
+        and probability_percent >= telegram_threshold
+        and telegram_token
+        and telegram_chat_id
+    ):
+        alert_message = (
+            f"🚨 LoyalCart yüksek churn riski\n"
+            f"Müşteri: {customer_id}\nRisk: %{probability_percent:.1f}\n"
+            f"Aksiyon: {outcome['action']}"
+        )
+        try:
+            telegram_result = send_telegram_message(
+                telegram_token, telegram_chat_id, alert_message
+            )
+            record_integration_event(
+                "telegram",
+                "churn_alert",
+                "success",
+                f"customer={customer_id}, message_id="
+                f"{telegram_result['result']['message_id']}",
+                st.session_state.get("username"),
+            )
+            st.toast("Telegram yüksek risk bildirimi gönderildi.")
+        except (TelegramError, requests.RequestException, KeyError) as exc:
+            record_integration_event(
+                "telegram",
+                "churn_alert",
+                "failed",
+                str(exc),
+                st.session_state.get("username"),
+            )
+            st.warning(f"Telegram bildirimi gönderilemedi: {exc}")
+
     card_class = "risk" if outcome["prediction"] == 1 else "loyal"
     icon = "🚨" if outcome["prediction"] == 1 else "✅"
     st.markdown(
