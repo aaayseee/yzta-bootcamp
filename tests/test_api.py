@@ -31,6 +31,14 @@ PAYLOAD = {
     "CreatedBy": "admin",
 }
 
+MODEL_RESULT = {
+    "prediction": 1,
+    "probability": 0.82,
+    "result": "Terk Riski Var",
+    "action": "Müşteriyle iletişime geçin.",
+    "model_version": "test-model",
+}
+
 
 class ApiTests(unittest.TestCase):
     def setUp(self):
@@ -63,14 +71,17 @@ class ApiTests(unittest.TestCase):
         unauthorized = self.client.post("/predict", json=PAYLOAD)
         self.assertEqual(unauthorized.status_code, 401)
 
-        response = self.client.post(
-            "/predict",
-            json=PAYLOAD,
-            headers={"X-API-Key": "test-api-key"},
-        )
+        with patch("main.predict_churn", return_value=MODEL_RESULT):
+            response = self.client.post(
+                "/predict",
+                json=PAYLOAD,
+                headers={"X-API-Key": "test-api-key"},
+            )
+
         self.assertEqual(response.status_code, 200)
         body = response.json()
-        self.assertIn(body["churn_prediction"], (0, 1))
+        self.assertEqual(body["churn_prediction"], 1)
+        self.assertEqual(body["churn_probability"], 0.82)
         self.assertTrue(body["database_saved"])
         self.assertIsInstance(body["prediction_id"], int)
 
