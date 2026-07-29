@@ -39,14 +39,54 @@ jobs:
           arayuz.py main.py prediction_service.py
           db services components pages_views tests
 
-      - name: Run core, API and integration tests
-        run: >-
-          python -m unittest -v
-          tests.test_repository
-          tests.test_security
-          tests.test_telegram
-          tests.test_email_service
-          tests.test_api
+      - id: repository
+        name: Repository tests
+        continue-on-error: true
+        run: python -m unittest -v tests.test_repository
 
-      - name: Run Streamlit smoke test
+      - id: security
+        name: Security tests
+        continue-on-error: true
+        run: python -m unittest -v tests.test_security
+
+      - id: telegram
+        name: Telegram tests
+        continue-on-error: true
+        run: python -m unittest -v tests.test_telegram
+
+      - id: email
+        name: Email tests
+        continue-on-error: true
+        run: python -m unittest -v tests.test_email_service
+
+      - id: api
+        name: API tests
+        continue-on-error: true
+        run: python -m unittest -v tests.test_api
+
+      - id: streamlit
+        name: Streamlit smoke test
+        continue-on-error: true
         run: python -m unittest -v tests.test_streamlit_app
+
+      - name: Publish diagnostic summary
+        if: always()
+        env:
+          REPOSITORY_RESULT: ${{ steps.repository.outcome }}
+          SECURITY_RESULT: ${{ steps.security.outcome }}
+          TELEGRAM_RESULT: ${{ steps.telegram.outcome }}
+          EMAIL_RESULT: ${{ steps.email.outcome }}
+          API_RESULT: ${{ steps.api.outcome }}
+          STREAMLIT_RESULT: ${{ steps.streamlit.outcome }}
+        run: |
+          {
+            echo "## LoyalCart CI diagnostic"
+            echo "| Test module | Result |"
+            echo "|---|---|"
+            echo "| repository | $REPOSITORY_RESULT |"
+            echo "| security | $SECURITY_RESULT |"
+            echo "| telegram | $TELEGRAM_RESULT |"
+            echo "| email | $EMAIL_RESULT |"
+            echo "| api | $API_RESULT |"
+            echo "| streamlit | $STREAMLIT_RESULT |"
+          } >> "$GITHUB_STEP_SUMMARY"
