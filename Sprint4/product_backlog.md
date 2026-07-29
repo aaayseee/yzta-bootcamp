@@ -14,7 +14,7 @@ tahmin servisine geçirmek.
 | P0 | Merkezi tahmin geçmişi | API ve fallback aynı DB şemasını kullanır | Tamamlandı |
 | P0 | SQLite/MySQL ortak repository | `DB_ENGINE` ile veritabanı seçilebilir | Tamamlandı |
 | P1 | API health ve API anahtarı | `/health` çalışır, yapılandırılmışsa anahtar zorunludur | Tamamlandı |
-| P1 | Otomatik testler | Kullanıcı, DB, API ve Streamlit açılışı doğrulanır | Devam ediyor |
+| P1 | Otomatik testler | Kullanıcı, DB, API ve Streamlit açılışı doğrulanır | Tamamlandı |
 | P1 | Gerçek Telegram entegrasyonu | Test mesajı gerçek Telegram yanıtına göre sonuçlanır | Bekliyor |
 | P2 | Süreli şifre reset tokenı ve e-posta | Tek kullanımlık token ile parola değişir | Bekliyor |
 | P2 | Docker Compose ve CI | Streamlit, FastAPI ve MySQL tek komutla başlar | Bekliyor |
