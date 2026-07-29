@@ -1,19 +1,24 @@
-# Python cache
+# Python cache and build output
 __pycache__/
 *.py[cod]
 *$py.class
+.pytest_cache/
 
-# Environment
+# Virtual environments
 .env
+.venv/
 venv/
 ENV/
 env/
 
-# Databases and CSV logs
+# Local databases and generated logs
 *.db
 tahmin_gecmisi.csv
 gecmis_tahminler.csv
 gecmis_tahminler_yeni.csv
 
-# Exclude README as requested
-README.md
+# Local IDE and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
