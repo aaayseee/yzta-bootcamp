@@ -1,20 +1,22 @@
+import json
 import os
-import pandas as pd
+
 import numpy as np
+import pandas as pd
 import streamlit as st
+
+from db.repository import clear_predictions, list_predictions, save_prediction
+
 
 @st.cache_data
 def get_synthetic_data():
     file_path = "sentez_veri.csv"
     if os.path.exists(file_path):
         return pd.read_csv(file_path)
-    
+
     np.random.seed(42)
     n = 200
-    
-    tenures = np.random.exponential(11.5, n).round(1)
-    tenures = np.clip(tenures, 0, 45)
-    
+    tenures = np.clip(np.random.exponential(11.5, n).round(1), 0, 45)
     data = {
         "Tenure": tenures,
         "PreferredLoginDevice": np.random.choice(["Mobile Phone", "Computer", "Phone"], n, p=[0.60, 0.30, 0.10]),
@@ -33,57 +35,73 @@ def get_synthetic_data():
         "CouponUsed": np.random.poisson(1.8, n).clip(0, 10),
         "OrderCount": np.random.poisson(2.8, n).clip(1, 12),
         "DaySinceLastOrder": np.random.exponential(6.5, n).round(1).clip(0, 25),
-        "CashbackAmount": np.random.normal(165, 45, n).round(1).clip(0, 320)
+        "CashbackAmount": np.random.normal(165, 45, n).round(1).clip(0, 320),
     }
     df = pd.DataFrame(data)
-    
     try:
-        import joblib
-        model = joblib.load("churn_modeli.pkl")
-        raw_df = df.copy()
-        df_encoded = pd.get_dummies(raw_df)
-        
-        if hasattr(model, "feature_names_in_"):
-            missing_cols = set(model.feature_names_in_) - set(df_encoded.columns)
-            for c in missing_cols:
-                df_encoded[c] = 0
-            df_encoded = df_encoded[model.feature_names_in_]
-            
-        preds = model.predict(df_encoded)
-        df["Churn"] = preds
+        from prediction_service import predict_churn
+
+        df["Churn"] = [
+            predict_churn(row.to_dict())["prediction"] for _, row in df.iterrows()
+        ]
     except Exception:
-        churn_prob = (
-            (df['Tenure'] < 6).astype(int) * 0.35 +
-            (df['Complain'] == 1).astype(int) * 0.35 +
-            (df['DaySinceLastOrder'] > 10).astype(int) * 0.20 +
-            (df['SatisfactionScore'] <= 2).astype(int) * 0.20
+        churn_probability = (
+            (df["Tenure"] < 6).astype(int) * 0.35
+            + (df["Complain"] == 1).astype(int) * 0.35
+            + (df["DaySinceLastOrder"] > 10).astype(int) * 0.20
+            + (df["SatisfactionScore"] <= 2).astype(int) * 0.20
         )
-        df['Churn'] = (churn_prob > 0.40).astype(int)
-        
+        df["Churn"] = (churn_probability > 0.40).astype(int)
     return df
 
 
 def get_prediction_history():
-    hist_path = "tahmin_gecmisi.csv"
-    if os.path.exists(hist_path):
-        return pd.read_csv(hist_path)
-    return pd.DataFrame(columns=["Tarih", "Müşteri ID", "Sonuç", "Risk İhtimali", "Tenure (Ay)", "Şikayet Durumu", "Önerilen Aksiyon"])
+    rows = []
+    for item in list_predictions():
+        try:
+            features = json.loads(item.get("features") or "{}")
+        except (TypeError, json.JSONDecodeError):
+            features = {}
+        probability = float(item.get("probability") or 0.0)
+        rows.append(
+            {
+                "Tarih": item.get("created_at"),
+                "Müşteri ID": item.get("customer_id") or "Belirtilmedi",
+                "Sonuç": item.get("result")
+                or ("Terk Riski Var" if item.get("prediction") else "Sadık Müşteri"),
+                "Risk İhtimali": f"%{probability * 100:.1f}",
+                "Tenure (Ay)": features.get("Tenure"),
+                "Şikayet Durumu": "Var" if features.get("Complain") == 1 else "Yok",
+                "Önerilen Aksiyon": item.get("action") or "-",
+                "Kaynak": item.get("source") or "-",
+                "İşlemi Yapan": item.get("created_by") or "-",
+                "Model": item.get("model_version") or "-",
+            }
+        )
+    return pd.DataFrame(rows)
 
 
-def save_to_history(id_val, pred_result, prob_val, tenure_val, complain_val, action_val):
-    hist_path = "tahmin_gecmisi.csv"
-    new_entry = {
-        "Tarih": pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "Müşteri ID": id_val,
-        "Sonuç": pred_result,
-        "Risk İhtimali": f"%{prob_val:.1f}",
-        "Tenure (Ay)": tenure_val,
-        "Şikayet Durumu": "Var" if complain_val == 1 else "Yok",
-        "Önerilen Aksiyon": action_val
-    }
-    if os.path.exists(hist_path):
-        df_hist = pd.read_csv(hist_path)
-        df_hist = pd.concat([pd.DataFrame([new_entry]), df_hist], ignore_index=True)
-    else:
-        df_hist = pd.DataFrame([new_entry])
-    df_hist.to_csv(hist_path, index=False)
+def save_to_history(
+    id_val,
+    pred_result,
+    prob_val,
+    tenure_val,
+    complain_val,
+    action_val,
+    source="streamlit",
+    created_by=None,
+):
+    return save_prediction(
+        customer_id=str(id_val),
+        features={"Tenure": tenure_val, "Complain": complain_val},
+        prediction=1 if "YÜKSEK" in pred_result.upper() else 0,
+        probability=float(prob_val) / 100,
+        result=pred_result,
+        action=action_val,
+        source=source,
+        created_by=created_by,
+    )
+
+
+def clear_prediction_history():
+    clear_predictions()

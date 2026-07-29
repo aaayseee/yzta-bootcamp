@@ -1,15 +1,25 @@
 import streamlit as st
 
+
 def render_sidebar():
     with st.sidebar:
-        st.markdown("""
-        <div style="display: flex; align-items: center; justify-content: flex-start; margin-bottom: 25px; padding-left: 5px;">
-            <span style="font-weight: 800; font-size: 26px; color: #f8fafc; display: inline-flex; align-items: center; gap: 3px; letter-spacing: -0.5px;">
-                L<span style="background: linear-gradient(135deg, #10b981 0%, #0ea5e9 100%); width: 26px; height: 26px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 0 10px rgba(16, 185, 129, 0.5); margin: 0 2px; transform: translateY(1px);">🛒</span>yalCart
-            </span>
-        </div>
-        """, unsafe_allow_html=True)
-        
+        st.markdown(
+            """
+            <div style="display:flex;align-items:center;margin-bottom:25px;padding-left:5px">
+              <span style="font-weight:800;font-size:26px;color:#f8fafc">
+                L<span style="background:linear-gradient(135deg,#10b981,#0ea5e9);
+                  width:26px;height:26px;border-radius:50%;display:inline-flex;
+                  align-items:center;justify-content:center;font-size:14px">🛒</span>yalCart
+              </span>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        role = st.session_state.get("role", "viewer")
+        username = st.session_state.get("username", "Kullanıcı")
+        st.caption(f"{username} · {role}")
+
         menu_options = [
             "📊 Genel Durum (Dashboard)",
             "🔮 Churn Simülasyonu (What-If)",
@@ -20,34 +30,35 @@ def render_sidebar():
             "🔍 Müşteri Analiz Paneli",
             "👥 Müşteri Segmentasyonu",
             "📋 Geçmiş Tahmin Kayıtları",
-            "🔌 Sistem Entegrasyonları"
         ]
-        
-        default_index = 0
-        if 'active_menu' in st.session_state and st.session_state.active_menu in menu_options:
-            default_index = menu_options.index(st.session_state.active_menu)
-            
+        if role == "administrator":
+            menu_options.append("🔌 Sistem Entegrasyonları")
+
+        active_menu = st.session_state.get("active_menu")
+        default_index = (
+            menu_options.index(active_menu) if active_menu in menu_options else 0
+        )
         selected_menu = st.radio(
             "Gezinme Menüsü",
             menu_options,
             index=default_index,
-            key="main_sidebar_radio"
+            key="main_sidebar_radio",
         )
-        
         st.session_state.active_menu = selected_menu
-        
+
         st.markdown("---")
-        if st.button("🚪 Çıkış Yap", width='stretch', key="logout_btn"):
-            st.session_state.logged_in = False
-            st.session_state.just_logged_out = True
+        if st.button("🚪 Çıkış Yap", use_container_width=True, key="logout_btn"):
+            for key in ("logged_in", "username", "role", "active_menu"):
+                st.session_state.pop(key, None)
             st.rerun()
-            
+
         st.markdown("---")
-        st.markdown("""
-        <div style="font-size: 12px; color: #64748b; text-align: center;">
-            L🛒yalCart v2.5 Executive Pro<br>
-            © 2026 LoyalCart AI Core
-        </div>
-        """, unsafe_allow_html=True)
-        
+        st.markdown(
+            """
+            <div style="font-size:12px;color:#64748b;text-align:center">
+              L🛒yalCart v3.0<br>© 2026 LoyalCart AI Core
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
         return selected_menu
