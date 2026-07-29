@@ -4,7 +4,7 @@ __pycache__/
 *$py.class
 .pytest_cache/
 
-# Virtual environments
+# Virtual environments and local secrets
 .env
 .venv/
 venv/
@@ -16,6 +16,11 @@ env/
 tahmin_gecmisi.csv
 gecmis_tahminler.csv
 gecmis_tahminler_yeni.csv
+
+# Patch and implementation scratch files
+.tmp_*
+.patch_probe
+*.rej
 
 # Local IDE and operating-system files
 .vscode/

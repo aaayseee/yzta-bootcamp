@@ -1,7 +1,0 @@
-diff a/arayuz.py b/arayuz.py	(rejected hunks)
-@@ -194,7 +109,7 @@ body.light-theme div[data-testid="column"]:has(.logo-container) div[data-testid=
- }
- </style>
- """, unsafe_allow_html=True)
--    st.iframe(get_login_javascript(), height=1, width=1)
-+    components.html(get_login_javascript(), height=1, width=1)
