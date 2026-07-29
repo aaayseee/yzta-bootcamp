@@ -1,283 +1,329 @@
-# 🛒 E-Ticaret Churn (Müşteri Kaybı) Tahmin & Segmentasyon Projesi (LoyalCart)
+# 🛒 LoyalCart — Churn Tahmin ve Müşteri Segmentasyon Platformu
 
-Bu depo, **YZTA Bootcamp** kapsamında geliştirilen, e-ticaret müşterilerinin şirketi terk etme (churn) olasılığını tahmin eden, 3D interaktif arayüz sunan ve risk seviyesine göre yapay zeka destekli aksiyon önerileri sunan **LoyalCart** projesidir.
+LoyalCart, e-ticaret müşterilerinin kayıp (churn) olasılığını Random Forest
+modeliyle tahmin eden; risk analizi, segmentasyon, aksiyon önerileri ve kalıcı
+tahmin geçmişi sunan bir YZTA Bootcamp projesidir.
 
-## 👥 Takım Üyeleri
+## Takım
 
 - Halil İbrahim ARİ — Product Owner
 - Zeynep Yağmur TÜRKELİ — Scrum Master
 - Ayşe ULAŞLI — Developer
 - Tümer GÜNEŞ — Developer
 
----
+## Güncel durum
 
-## 🎯 Proje Amacı
+Sprint 4 ile proje aşağıdaki üretim temellerine taşındı:
 
-- Müşteri churn (kayıp) olasılığını yüksek doğrulukla tahmin etmek
-- Müşterileri risk seviyelerine göre segmentlere ayırmak (yüksek / orta / düşük risk)
-- 3D Parallax & Holografik cam görünümlü canlı bir Streamlit arayüzünde tüm metrikleri sunmak
-- Yapay zeka destekli otomatik aksiyon önerileri ve simülasyonlar ile churn riskini azaltacak stratejiler geliştirmek
+- Güvenli, hashlenmiş kullanıcı parolaları
+- `administrator`, `manager` ve `viewer` rolleri
+- SQLite/MySQL ortak repository katmanı
+- FastAPI ve Streamlit tarafından paylaşılan tahmin servisi
+- API kesintisinde yerel model fallback
+- CSV yerine veritabanından okunan tahmin geçmişi
+- API anahtarı koruması ve `/health` endpoint'i
+- Gerçek Telegram Bot API bağlantısı ve kalıcı entegrasyon logları
+- 30 dakika geçerli, tek kullanımlık şifre sıfırlama tokenları
+- SMTP üzerinden şifre sıfırlama e-postası
+- Docker Compose ve GitHub Actions CI
+- Kullanıcı, veritabanı, API, Telegram ve Streamlit smoke testleri
 
----
+WhatsApp ve Zendesk ekranları artık sahte başarı üretmez. Bu sağlayıcılar gerçek
+hesap bilgileri ve servis sözleşmeleri hazır olduğunda ayrı adaptörlerle
+etkinleştirilecektir.
 
-## 🚀 Özellikler & Yenilikler (Sprint 2)
+## Özellikler
 
-- **3D Interactive Parallax Viewport:** Farenin hareketine duyarlı 3 boyutlu bükülebilir holografik sayfa plakası.
-- **Dynamic 3D Money Rain Canvas:** Ekranın arkasında süzülen 3 boyutlu Matrix para yağmuru animasyonu.
-- **Adaptive Dual-Theme Engine:** Kullanıcının Streamlit açık (Light) veya koyu (Dark) tema seçimine göre anlık saydamlaşan cam (glassmorphism) tasarımı.
-- **Floating Glass Island Sidebar:** Sol tarafta ekrandan bağımsız süzülen, kayan navigasyon butonlarına sahip modern menü adası.
-- **9 Gelişmiş Analitik Sayfa Modülü:**
-  1. 📊 Genel Durum (Dashboard)
-  2. 🔮 Churn Simülasyonu (What-If ROI Analizi)
-  3. 🚨 Erken Uyarı & Otomatik Aksiyon Merkezi
-  4. 📈 Kohort Analiz Raporu (Retention Matrisi & LTV/CAC)
-  5. 💬 Şikayet & Bilet Yönetimi (SLA Analizi)
-  6. ⭐ NPS & Müşteri Bağlılık Ligi
-  7. 🔍 Bireysel Müşteri Churn Analiz Paneli
-  8. 👥 Müşteri Segmentasyonu & Davranış Analizi
-  9. 📋 Geçmiş Tahmin Kayıtları & Denetim Günlüğü
+Portalda 10 modül bulunur:
 
----
+1. 📊 Genel Durum Dashboard
+2. 🔮 Churn Simülasyonu
+3. 🚨 Erken Uyarı ve Aksiyon Merkezi
+4. 📈 Kohort Analizi
+5. 💬 Şikayet ve Bilet Yönetimi
+6. ⭐ NPS ve Müşteri Bağlılık Ligi
+7. 🔍 Bireysel Müşteri Analizi
+8. 👥 Müşteri Segmentasyonu
+9. 📋 Kalıcı Tahmin Geçmişi
+10. 🔌 Sistem Entegrasyonları
 
-## 🏗️ Proje Mimarisi
+Entegrasyon ekranı yalnızca `administrator` rolüne açıktır. Tahmin geçmişini
+temizleme işlemi de administrator yetkisi gerektirir.
 
+## Mimari
+
+```text
+                       ┌─────────────────────────┐
+                       │  Streamlit / arayuz.py  │
+                       │         :8501           │
+                       └────────────┬────────────┘
+                                    │ HTTP
+                                    ▼
+                       ┌─────────────────────────┐
+                       │   FastAPI / main.py     │
+                       │         :8000           │
+                       └────────────┬────────────┘
+                                    │
+                 ┌──────────────────┼──────────────────┐
+                 ▼                  ▼                  ▼
+       prediction_service.py   db/repository.py   Telegram / SMTP
+                 │                  │
+                 ▼                  ▼
+          churn_modeli.pkl     SQLite veya MySQL
 ```
-Kaggle Veri Seti (5.630 müşteri, 20 özellik)
-       │
-       ▼
-  Veri Temizliği (eksik değer, kategorik düzeltme)
-       │
-       ▼
-  Keşifsel Veri Analizi (EDA) & Encoding
-       │
-       ▼
-  Random Forest Modeli (%97.4 doğruluk)
-       │
-       ▼
-  ┌─────────────────────────────────────────────────────────┐
-  │                 FastAPI Backend Server                  │
-  │                   (main.py / :8000)                     │
-  └────────────────────────────┬────────────────────────────┘
-                               │
-                               ▼
-  ┌─────────────────────────────────────────────────────────┐
-  │             LoyalCart Streamlit Frontend                │
-  │                  (arayuz.py / :8501)                    │
-  ├────────────────────────────┬────────────────────────────┤
-  │ 3D Parallax & Money Rain   │ Dynamic Light/Dark Glass   │
-  │ Floating Island Sidebar    │ 9 Modular Page Renderers   │
-  └────────────────────────────┴────────────────────────────┘
-```
 
----
+FastAPI erişilemezse Streamlit, modeli doğrudan
+`prediction_service.py` üzerinden çalıştırır. Her iki yol da aynı tahmin
+şemasını ve veritabanı repository katmanını kullanır.
 
-## 📂 Modüler Proje Yapısı
+## Proje yapısı
 
-```
+```text
 .
-├── main.py                     # FastAPI backend sunucusu
-├── arayuz.py                   # Streamlit ana giriş ve yönlendirici (~80 satır)
-├── styles.py                   # CSS stilleri ve 3D JS animasyon kodları
-├── data_loader.py              # Sentetik veri üretici, cache ve tahmin geçmişi yönetimi
-├── components/                 # Yeniden kullanılabilir UI bileşenleri
-│   ├── plotly_theme.py         # Plotly grafik şablonu
-│   └── sidebar.py              # Yüzen Cam Ada menü bileşeni
-├── pages_views/                # Bağımsız 9 analitik sayfa modülü
-│   ├── dashboard.py
-│   ├── customer_analysis.py
-│   ├── segmentation.py
-│   ├── history.py
-│   ├── simulation.py
-│   ├── early_warning.py
-│   ├── cohort.py
-│   ├── complaints.py
-│   └── nps_league.py
+├── arayuz.py                    # Streamlit giriş noktası ve güvenli oturum
+├── main.py                      # FastAPI tahmin API'si
+├── prediction_service.py        # Ortak model tahmin servisi
+├── data_loader.py               # Sentetik veri ve DB geçmiş görünümü
+├── churn_modeli.pkl             # Eğitilmiş Random Forest modeli
+├── components/
+│   ├── plotly_theme.py
+│   └── sidebar.py
+├── db/
+│   ├── repository.py            # Kullanıcı ve tahmin repository'si
+│   ├── security.py              # Reset tokenları ve entegrasyon logları
+│   └── mysql_init.sql
+├── services/
+│   ├── telegram.py
+│   └── email_service.py
+├── pages_views/                 # 10 Streamlit sayfa modülü
+├── scripts/create_mysql_db.py
+├── tests/
 ├── Sprint1/
-│   ├── sprint1_review.md
-│   └── sprint1_retrospective.md
 ├── Sprint2/
-│   ├── product_backlog.md
-│   └── daily_scrum.md
-├── YZTA_Churn_Tahmin_Modeli.ipynb
-├── requirements.txt
-└── README.md
+├── Sprint3/
+├── Sprint4/
+├── Dockerfile
+├── docker-compose.yml
+└── requirements.txt
 ```
 
----
+## Yerel kurulum
 
-## 🛠️ Kullanılan Teknolojiler
+Python 3.12 önerilir.
 
-| Teknoloji / Araç | Projedeki Rolü |
-|---|---|
-| Python 3.12 | Veri işleme, backend ve arayüz geliştirme |
-| FastAPI / Uvicorn | RESTful API tahmin sunucusu |
-| Scikit-learn / Joblib | Random Forest churn tahmin modeli |
-| Streamlit | 3D Etkileşimli kullanıcı portalı |
-| HTML5 / CSS3 / Vanilla JS | 3D Parallax Viewport, Matrix para yağmuru tuvali ve Glassmorphism |
-| Plotly Express | Şeffaf ve etkileşimli veri görselleştirme |
-| Pandas / NumPy | Veri manipülasyonu ve sentetik veri motoru |
-| Git & GitHub | Sürüm kontrolü ve modüler proje paylaşımı |
+### 1. Sanal ortam
 
----
+Windows PowerShell:
 
-## 📅 SPRINT 1 ÇIKTILARI
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
 
-* Veri seti Kaggle'dan çekildi (5.630 müşteri, 20 özellik)
-* Eksik değerler medyan ile dolduruldu, kategorik düzeltmeler yapıldı
-* Keşifsel Veri Analizi (EDA) tamamlandı
-* Encoding işlemi tamamlandı
-* Random Forest modeli kuruldu — **%97.4 doğruluk**
-* GitHub reposu ve Scrum tahtası oluşturuldu
+macOS/Linux:
 
-# Backlog Düzeni ve Sprint Board
-<img width="1915" height="827" alt="image" src="https://github.com/user-attachments/assets/32054919-efcf-4dba-ac90-5518dce4498a" />
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
 
-# Daily Scrum
-<img width="825" height="1184" alt="image" src="https://github.com/user-attachments/assets/3afcf251-3350-4a43-aadb-b5bb1245d7a6" />
+### 2. Ortam değişkenleri
 
-# Ürün Durumu (Product Increment)
-<img width="1916" height="940" alt="image" src="https://github.com/user-attachments/assets/3cc363f1-ec1e-47e6-bfd6-b4bf3444c3de" />
+`.env.example` dosyasını `.env` olarak kopyalayın ve örnek değerleri değiştirin.
+Uygulama `.env` dosyasını kendiliğinden yüklemez; değişkenleri terminal,
+deployment platformu veya Streamlit secrets alanı üzerinden sağlamalısınız.
 
-# 🔎 Sprint 1 Review
-**Tamamlananlar:** Veri setinin entegrasyonu, GitHub repo ve Scrum tahtasının kurulumu, EDA aşaması ve Random Forest modelinin eğitilmesi.
+En az şu değerler gereklidir:
 
-**Mevcut Durum:** Sprint 1 için planlanan tüm hedeflere beklenenden kısa sürede ulaşıldı. Modelin %97.4 doğruluk göstermesi, projenin temelinin sağlam atıldığını gösteriyor. (Not: Yüksek doğruluk oranı overfitting ihtimaline karşı Sprint 2'de cross-validation ile doğrulanacak.)
+```text
+DB_ENGINE=sqlite
+SQLITE_PATH=loyalcart.db
+LOYALCART_ADMIN_PASSWORD=güçlü-bir-yönetici-şifresi
+LOYALCART_INVITE_CODE=gizli-bir-davet-kodu
+LOYALCART_API_KEY=gizli-bir-api-anahtarı
+LOYALCART_API_URL=http://127.0.0.1:8000
+```
 
-# 🔁 Sprint 1 Retrospective
-**Ne İyi Gitti:** Disiplinli ve planlı ilerleme zaman yönetimini kolaylaştırdı. Colab–GitHub entegrasyonu sorunsuz çalıştı.
+İlk çalıştırmada admin hesabı `LOYALCART_ADMIN_USERNAME`,
+`LOYALCART_ADMIN_EMAIL` ve `LOYALCART_ADMIN_PASSWORD` değerleriyle oluşturulur.
+Parola kaynak koda veya veritabanına düz metin olarak yazılmaz.
 
-**Neler Zorladı:** GitHub reposunu ayağa kaldırırken küçük bir yetkilendirme adımı zaman aldı, hızlıca çözüldü.
+### 3. Servisleri çalıştırma
 
-**Sprint 2 Aksiyon Planı:** Model backend'i sağlam olduğuna göre; müşteri segmentasyonu, Streamlit arayüzü ve YZ aksiyon önerisi geliştirmelerine odaklanılacak.
+Terminal 1 — FastAPI:
 
-# 📌 Sprint 2 Hedefleri
-| User Story | Durum |
-| :--- | :--- |
-| US-04 Müşteri Segmentasyonu | 🔲 To Do |
-| US-05 Streamlit Arayüzü | 🔲 To Do |
-| US-06 YZ Aksiyon Öneri Asistanı | 🔲 To Do |
+```bash
+uvicorn main:app --host 127.0.0.1 --port 8000 --reload
+```
 
-# 📈 Proje Durumu
-🟡 Geliştirme Aşamasında — Sprint 1 başarıyla tamamlandı, Sprint 2'de segmentasyon ve arayüz çalışmaları sürüyordu.
+Terminal 2 — Streamlit:
 
-*Bu proje, Scrum metodolojisi kullanılarak ekip çalışması kapsamında geliştirilmektedir.*
+```bash
+streamlit run arayuz.py
+```
 
-## 📅 SPRINT 2 SCRUM & TESLİMAT DOSYASI
+Adresler:
 
-> ℹ️ **Not:** Makine öğrenmesi churn tahmin modeli (Random Forest) Sprint 1 aşamasında tamamlanmış olup, **Sprint 2'deki tüm geliştirmeler VS Code ortamında** sistem mimarisi, FastAPI backend entegrasyonu, 3D arayüz (UI/UX) ve modüler kod refactoring üzerine gerçekleştirilmiştir.
+- Streamlit: `http://localhost:8501`
+- FastAPI: `http://localhost:8000`
+- API dokümantasyonu: `http://localhost:8000/docs`
+- Health check: `http://localhost:8000/health`
 
-### 💬 1. Daily Scrum Notları
+## Docker Compose
 
-####  3D Görsellik & Parallaks Arayüzü
-> **- Neler yaptık?:** KPI kartlarının sayfa yenilemede oturumu kapatma hatasını çözdük.
-> **- Neler yapacağız?:** Dashboard'a farenin hareketine duyarlı 3D Parallax tilt efekti ve arka planda süzülen 3D Matrix para yağmuru animasyonunu entegre edeceğiz.
-> **- Engel/Blocker Var mı?:** Yok.
+Docker kurulumu Streamlit, FastAPI ve MySQL servislerini birlikte başlatır.
+Önce gerekli secret değerlerini terminalde veya `.env` dosyasında tanımlayın:
 
-####  Açık Mod (Light Mode) Uyum ve Gelişmiş Modüller
-> **- Neler yaptık?:** 3D bükülme efektini ve 5 yeni gelişmiş analitik modülü (What-If Simülasyonu, Erken Uyarı Merkezi, Kohort Raporu, Şikayet Yönetimi, NPS Ligi) tamamladık.
-> **- Neler yapacağız?:** Streamlit açık tema (Light Mode) seçildiğinde oluşan okunamayan metin hatalarını giderip çift-tema uyumlu cam (glassmorphism) tasarımını yayına alacağız.
-> **- Engel/Blocker Var mı?:** Yok, arayüz testleri devam ediyor.
+```text
+LOYALCART_ADMIN_PASSWORD=...
+LOYALCART_INVITE_CODE=...
+LOYALCART_API_KEY=...
+MYSQL_PASSWORD=...
+MYSQL_ROOT_PASSWORD=...
+```
 
-####  Yüzen Cam Ada Menü & Kod Temizliği (Refactoring)
-> **- Neler yaptık?:** Açık ve koyu temayı dinamik algılayan JS tuval döngüsünü ekledim. Sol navigasyon panelini ekrandan bağımsız yüzen bir cam kapsüle (Floating Glass Island) dönüştürdüm.
-> **- Neler yapacağız?:** 1.500 satırlık arayüz kodunu temizleyip modüler Python dosyalarına (`styles.py`, `data_loader.py`, `components/`, `pages_views/`) ayıracağım ve projeyi GitHub'a push edeceğim.
-> **- Engel/Blocker Var mı?:** Yok, Sprint 2 hedefleri tamamlanıyor.
+Ardından:
 
-<img width="826" height="410" alt="5974166515533680199" src="https://github.com/user-attachments/assets/f49efde7-48be-4053-9d8a-e7c807fb3572" />
-<img width="828" height="858" alt="5974166515533680200" src="https://github.com/user-attachments/assets/9ba707ee-ea3d-48fe-8d10-54a261a18f50" />
----
+```bash
+docker compose up --build
+```
 
-### 🎯 2. Backlog Dağıtma Mantığı (Sprint 2 Backlog Rasyoneli)
+MySQL verisi `loyalcart_mysql` adlı Docker volume içinde kalıcı tutulur.
 
-* **Sprint 2 Amacı (Sprint Goal):** LoyalCart platformunu statik bir panelden, fare hareketleriyle etkileşime giren 3D bükülmeli, çift-tema uyumlu, modüler kod yapısına sahip ve 9 farklı analitik modülü barındıran kurumsal bir yönetici portalına dönüştürmek.
-* **Görev Dağılımı ve Önceliklendirme Mantığı:**
-  1. **Yüksek Öncelik (P0 - Visual & UX Overhaul):** 3D Parallax Viewport, Matrix para yağmuru ve yüzen cam ada menüsü.
-  2. **Yüksek Öncelik (P0 - Dark/Light Theme Engine):** Kullanıcının tema tercihine göre arka plan tuvalinin ve metin renklerinin anlık değişmesi.
-  3. **Orta Öncelik (P1 - Advanced Business Analytics):** What-If ROI Simülatörü, Erken Uyarı Otomasyonu, Kohort Retention Matrisi.
-  4. **Teknik Öncelik (P1 - Code Architecture):** Monolitik `arayuz.py` dosyasını modüler paket yapısına kavuşturma.
----
+## Telegram entegrasyonu
 
-### 📋 3. Sprint Board / Breadboard Updates (VS Code Görev Durumu)
+BotFather üzerinden bot oluşturduktan sonra:
 
-| Task ID | Görev Adı | İlgili Kişi | Durum (Status) |
-| :--- | :--- | :--- | :--- |
-| **TSK-11** | 3D Viewport Parallax Tilt & Fare Takip Algoritması | Front-end / AI | **DONE ✅** |
-| **TSK-12** | Matrix Para Yağmuru 3D Tuval Animasyonu | Front-end | **DONE ✅** |
-| **TSK-13** | Açık/Koyu Tema Dinamik Algılayıcı (Light Mode CSS Fix) | Front-end | **DONE ✅** |
-| **TSK-14** | Yüzen Cam Ada (Floating Glass Island) Sol Menü | UI/UX | **DONE ✅** |
-| **TSK-15** | What-If Churn Simülasyonu & ROI Hesaplayıcı | Full-stack | **DONE ✅** |
-| **TSK-16** | Erken Uyarı & Otomatik Kupon Aksiyon Merkezi | Backend | **DONE ✅** |
-| **TSK-17** | Kod Tabanı Temizliği & Modüler Python Mimarisi | Architecture | **DONE ✅** |
-| **TSK-18** | GitHub Repository Entegrasyonu ve Push | DevOps | **DONE ✅** |
+```text
+TELEGRAM_BOT_TOKEN=...
+TELEGRAM_CHAT_ID=...
+TELEGRAM_CHURN_THRESHOLD=70
+```
 
-# Backlog Düzeni ve Sprint Board
-<img width="1918" height="907" alt="Ekran görüntüsü 2026-07-19 213644" src="https://github.com/user-attachments/assets/42053a69-ec47-4bc8-b6d9-b5634aaed6c1" />
-<img width="1918" height="883" alt="Ekran görüntüsü 2026-07-19 213737" src="https://github.com/user-attachments/assets/8fbf632d-eb3c-4bd4-8dd2-ed055a20ffbf" />
-<img width="1918" height="893" alt="Ekran görüntüsü 2026-07-19 213824" src="https://github.com/user-attachments/assets/4e58d266-f819-475a-86f2-abb6eee6eedd" />
----
+Administrator hesabıyla **Sistem Entegrasyonları** sayfasına girip gerçek test
+mesajı gönderebilirsiniz. Başarı yalnızca Telegram Bot API `ok=true` yanıtı
+verdiğinde gösterilir. Başarılı ve başarısız denemeler `integration_events`
+tablosunda saklanır.
 
-### 📦 4. Ürün Durumu (Product Increment Status)
+## Şifre sıfırlama e-postası
 
-Sprint 2 sonunda teslim edilen **LoyalCart v2.5 Executive Pro** güncel sürüm özellikleri:
-* **Canlı Backend:** FastAPI Makine Öğrenmesi Tahmin Sunucusu (`http://127.0.0.1:8000`)
-* **Canlı Portalı:** Streamlit 3D Holografik Panel (`http://localhost:8501`)
-* **Modüler Dosya Yapısı:** `styles.py`, `data_loader.py`, `components/`, `pages_views/` klasör ayrımıyla %100 temiz Python mimarisi.
-* **Gelişmiş 9 Analitik Modül:** Dashboard, What-If Simülasyonu, Erken Uyarı, Kohort Matrisi, Şikayet SLA, NPS Ligi, Bireysel Analiz, Segmentasyon ve Geçmiş Kayıtlar.
+Şifre sıfırlama bağlantısı göndermek için SMTP değişkenlerini ayarlayın:
 
-<img width="1918" height="958" alt="Ekran görüntüsü 2026-07-19 214048" src="https://github.com/user-attachments/assets/aaacc573-1c3a-4d72-be00-c88c99e1a3e4" />
-<img width="1918" height="900" alt="Ekran görüntüsü 2026-07-19 214147" src="https://github.com/user-attachments/assets/d651b8fc-afeb-4640-a9c6-4ef7ad9fe67d" />
-<img width="1918" height="965" alt="Ekran görüntüsü 2026-07-19 214255" src="https://github.com/user-attachments/assets/fc6d4d95-530c-4713-9dde-40e0fd23b40e" />
-<img width="1918" height="955" alt="Ekran görüntüsü 2026-07-19 214400" src="https://github.com/user-attachments/assets/c11b65f4-9b19-41f8-a68f-a9fd34fcfe18" />
-<img width="1918" height="960" alt="Ekran görüntüsü 2026-07-19 214529" src="https://github.com/user-attachments/assets/6c19434e-e7c3-4b63-bf76-4f865cb43b8f" />
-<img width="1918" height="967" alt="Ekran görüntüsü 2026-07-19 214632" src="https://github.com/user-attachments/assets/479f9569-a8be-41b0-a692-a4401db75512" />
-<img width="1918" height="958" alt="Ekran görüntüsü 2026-07-19 214710" src="https://github.com/user-attachments/assets/b52d0f6c-b74e-4791-928f-31e58c407d22" />
-<img width="1918" height="952" alt="Ekran görüntüsü 2026-07-19 214811" src="https://github.com/user-attachments/assets/294693c7-536b-45e6-9861-ad761af4e3a8" />
-<img width="1918" height="950" alt="Ekran görüntüsü 2026-07-19 214848" src="https://github.com/user-attachments/assets/281e3598-3cd2-4d27-8506-9f4a539de79d" />
-<img width="1918" height="951" alt="Ekran görüntüsü 2026-07-19 214916" src="https://github.com/user-attachments/assets/286a307e-d475-4bf8-8f4d-0852bdcd6fb2" />
----
+```text
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USER=...
+SMTP_PASSWORD=...
+SMTP_FROM=LoyalCart <no-reply@example.com>
+SMTP_USE_TLS=1
+LOYALCART_APP_URL=https://uygulama-adresiniz.example.com
+```
 
-### 🔍 5. Sprint 2 Review (Sprint İnceleme Raporu)
+Reset tokenı:
 
-* **Toplantı Katılımcıları:** Scrum Ekibi, Product Owner, Paydaşlar.
-* **Sunulan Ürün:** Ekranın 3D olarak büküldüğü, açık/koyu mod seçimine göre arka planın anında değiştiği ve tüm kodların modüler `.py` dosyalarına ayrıldığı canlı portal demosu yapıldı.
-* **Geri Bildirimler:** Paydaşlar visual parallax efektinden, açık mod kontrast düzeltmesinden ve kodun okunabilir modüler yapısından tam memnuniyet bildirdi.
-* **Kabul Edilen Hikayeler:** Sprint 2 hedefleri arasındaki tüm User Story'ler kabul edildi.
+- Veritabanında yalnızca SHA-256 özetiyle tutulur.
+- 30 dakika geçerlidir.
+- Başarılı parola değişiminden sonra yeniden kullanılamaz.
+- Hesap sorgulamasını önlemek için kullanıcıya her durumda aynı genel mesaj gösterilir.
 
----
+## API kullanımı
 
-### 🔄 6. Sprint 2 Retrospective (Sprint Retrospektifi)
+`LOYALCART_API_KEY` ayarlanmışsa isteklerde `X-API-Key` başlığı zorunludur.
 
-#### 👍 What Went Well? (Ne İyi Gitti?)
-* 3D Parallax ve Matrix para yağmuru ile benzersiz bir kullanıcı deneyimi (UX) yakalandı.
-* 1.500 satırlık tek dosya yerine modüler Python yapısına geçilerek kod kalitesi yükseltildi.
-* Açık/koyu tema hataları tamamen giderildi.
+```bash
+curl -X POST http://localhost:8000/predict \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: API_ANAHTARINIZ" \
+  -d '{
+    "Tenure": 4,
+    "PreferredLoginDevice": "Mobile Phone",
+    "CityTier": 1,
+    "WarehouseToHome": 15,
+    "PreferredPaymentMode": "Debit Card",
+    "Gender": "Female",
+    "HourSpendOnApp": 3,
+    "NumberOfDeviceRegistered": 3,
+    "PreferedOrderCat": "Laptop & Accessory",
+    "SatisfactionScore": 2,
+    "MaritalStatus": "Single",
+    "NumberOfAddress": 2,
+    "Complain": 1,
+    "OrderAmountHikeFromlastYear": 15,
+    "CouponUsed": 1,
+    "OrderCount": 2,
+    "DaySinceLastOrder": 12,
+    "CashbackAmount": 160,
+    "CustomerId": "CUSTOMER-1001",
+    "CreatedBy": "admin"
+  }'
+```
 
-#### 💡 What Can Be Improved? (Ne Geliştirilebilir?)
-* Gelecek sprintlerde backend tahmin sürelerini daha da hızlandırmak için asenkron (async) API çağrıları eklenebilir.
-* Docker konteynırlaştırma ile canlı sunucuya canlı dağıtım (deployment) yapılabilir.
+## Veritabanı
 
-#### 🎯 Action Items (Aksiyon Maddeleri)
-1. Proje reposunu arkadaşların `Collaborator` olarak eklenmesiyle ortak geliştirmeye açık tutmak.
-2. Sprint 3 için gerçek müşteri veri seti entegrasyonu hazırlıklarına başlamak.
+Varsayılan geliştirme veritabanı SQLite'tır. MySQL için:
 
----
+```text
+DB_ENGINE=mysql
+MYSQL_HOST=127.0.0.1
+MYSQL_PORT=3306
+MYSQL_USER=loyalcart
+MYSQL_PASSWORD=...
+MYSQL_DB=loyalcart
+```
 
-## 📌 Sprint User Story Durumu
+Kurulum betiği:
 
-| User Story | Durum |
-|---|---|
-| US-01 Veri Temizliği & EDA | ✅ SPRINT 1 DONE |
-| US-02 Random Forest Modeli (%97.4) | ✅ SPRINT 1 DONE |
-| US-04 Müşteri Segmentasyonu & Gelişmiş Modüller | ✅ SPRINT 2 DONE |
-| US-05 Streamlit 3D & Çift-Tema Arayüzü | ✅ SPRINT 2 DONE |
-| US-06 YZ Aksiyon Öneri & What-If Simülatörü | ✅ SPRINT 2 DONE |
+```bash
+python scripts/create_mysql_db.py
+```
 
----
+Temel tablolar:
 
-## 📈 Proje Durumu
+- `users`
+- `predictions`
+- `audit_logs`
+- `password_reset_tokens`
+- `integration_events`
 
-🟢 **Sprint 2 Başarıyla Tamamlandı** — LoyalCart v2.5 Executive Pro sürümü yayında ve tüm modülleriyle GitHub reposunda günceldir.
+## Testler
 
----
+```bash
+python -m compileall -q .
+python -m unittest discover -s tests -v
+```
 
-> Bu proje, Scrum metodolojisi kullanılarak YZTA Bootcamp ekibi tarafından geliştirilmektedir.
+Test paketi şunları doğrular:
+
+- Parola hashleme ve kullanıcı doğrulama
+- Kullanıcı/e-posta çakışma kontrolü
+- Tahmin geçmişinin DB yazma/okuma akışı
+- API health, API anahtarı ve tahmin kaydı
+- Tek kullanımlık şifre reset tokenı
+- Telegram başarı ve hata yanıtları
+- Login sonrası 10 Streamlit sayfasının smoke testi
+
+GitHub Actions yapılandırması her push ve pull request'te derleme ile testleri
+otomatik çalıştırır.
+
+## Sprint belgeleri
+
+- [Sprint 1](Sprint1/)
+- [Sprint 2](Sprint2/)
+- [Sprint 3](Sprint3/)
+- [Sprint 4](Sprint4/)
+
+Sprint 1'de raporlanan model doğruluğu `%97.4` değeridir. Model
+değerlendirmesinin yeniden üretilebilmesi için veri bölme yöntemi, sınıf
+dengesi ve cross-validation sonuçlarının ayrıca sürümlenmesi önerilir.
+
+## Güvenlik notları
+
+- `.env`, yerel veritabanları ve üretilen log dosyaları Git tarafından izlenmez.
+- Secret değerleri kaynak koda yazılmamalıdır.
+- Canlı ortamda HTTPS kullanılmalıdır.
+- Admin, API, SMTP ve Telegram secretları düzenli olarak döndürülmelidir.
+- MySQL kullanıcısına yalnızca LoyalCart veritabanı için gerekli izinler verilmelidir.
