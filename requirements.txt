@@ -4,6 +4,7 @@ httpx==0.28.1
 joblib==1.5.1
 scikit-learn==1.6.1
 pandas==2.2.3
+pyarrow==20.0.0
 streamlit==1.45.1
 requests==2.32.3
 mysql-connector-python>=9.0,<10.0
