@@ -247,6 +247,18 @@ def ensure_admin_from_environment() -> bool:
     email = os.getenv("LOYALCART_ADMIN_EMAIL", "admin@loyalcart.local").strip()
     existing = get_user(username)
     if existing:
+        if existing.get("password_hash"):
+            return True
+        encoded = hash_password(password)
+        p = _placeholder()
+        with _connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                "UPDATE users SET password_hash = "
+                f"{p}, role = {p}, is_active = {p} WHERE LOWER(username) = LOWER({p})",
+                (encoded, "administrator", 1, username),
+            )
+            cursor.close()
         return True
     create_user(username, email, password, role="administrator")
     return True
