@@ -9,14 +9,11 @@ venv/
 ENV/
 env/
 
-# Streamlit
-.streamlit/
-
-# Exclude README as requested
-README.md
-
 # Databases and CSV logs
 *.db
 tahmin_gecmisi.csv
 gecmis_tahminler.csv
 gecmis_tahminler_yeni.csv
+
+# Exclude README as requested
+README.md
