@@ -52,27 +52,7 @@ jobs:
         run: python -m unittest -v tests.test_email_service
 
       - name: API tests
-        shell: bash
-        run: |
-          python - <<'PY'
-          import subprocess
-
-          result = subprocess.run(
-              ["python", "-m", "unittest", "-v", "tests.test_api"],
-              stdout=subprocess.PIPE,
-              stderr=subprocess.STDOUT,
-              text=True,
-          )
-          print(result.stdout)
-          if result.returncode:
-              message = (
-                  result.stdout.replace("%", "%25")
-                  .replace("\r", "%0D")
-                  .replace("\n", "%0A")
-              )
-              print(f"::error title=API test traceback::{message}")
-          raise SystemExit(result.returncode)
-          PY
+        run: python -m unittest -v tests.test_api
 
       - name: Streamlit smoke test
         run: python -m unittest -v tests.test_streamlit_app
