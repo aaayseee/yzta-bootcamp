@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+joblib
+scikit-learn
+pandas
+streamlit
+requests
+mysql-connector-python
+plotly
+numpy
+
