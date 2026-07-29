@@ -32,8 +32,10 @@ def main():
 
         os.environ["DB_ENGINE"] = "mysql"
         from db.repository import initialize_database
+        from db.security import initialize_security_tables
 
         initialize_database()
+        initialize_security_tables()
         print(f"`{database}` veritabanı ve LoyalCart tabloları hazır.")
     except mysql.connector.Error as exc:
         print(f"MySQL hatası: {exc}")
