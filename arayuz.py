@@ -15,6 +15,12 @@ from db.repository import (
     initialize_database,
     record_audit,
 )
+from db.security import (
+    create_password_reset_token,
+    initialize_security_tables,
+    reset_password,
+)
+from services.email_service import send_password_reset_email
 from pages_views.cohort import render_cohort_page
 from pages_views.complaints import render_complaints_page
 from pages_views.customer_analysis import render_customer_analysis_page
@@ -47,14 +53,18 @@ def rerun() -> None:
     st.experimental_rerun()
 
 
-def query_flag(name: str) -> bool:
+def query_value(name: str):
     try:
         value = st.query_params.get(name)
     except AttributeError:
         value = st.experimental_get_query_params().get(name)
     if isinstance(value, list):
         value = value[0] if value else None
-    return str(value).lower() == "true"
+    return value
+
+
+def query_flag(name: str) -> bool:
+    return str(query_value(name)).lower() == "true"
 
 
 def render_brand() -> None:
@@ -89,20 +99,62 @@ def render_password_reset() -> None:
             if not identifier:
                 st.error("Lütfen kullanıcı adınızı veya e-posta adresinizi girin.")
             else:
+                reset_request = create_password_reset_token(identifier)
+                delivery_status = "account_not_found"
+                if reset_request:
+                    token, email = reset_request
+                    try:
+                        delivery_status = (
+                            "email_sent"
+                            if send_password_reset_email(email, token)
+                            else "smtp_not_configured"
+                        )
+                    except Exception:
+                        delivery_status = "email_failed"
                 record_audit(
-                    "password_reset_requested",
-                    "pending",
-                    details="E-posta servisi yapılandırılmadı.",
+                    "password_reset_requested", delivery_status, identifier
                 )
                 st.info(
-                    "Hesap kayıtlıysa talep alınmıştır. E-posta servisi henüz "
-                    "yapılandırılmadığı için sistem yöneticinizle iletişime geçin."
+                    "Hesap kayıtlı ve e-posta servisi yapılandırılmışsa, "
+                    "30 dakika geçerli sıfırlama bağlantısı gönderilmiştir."
                 )
         st.markdown(
             '<p style="text-align:center"><a href="?forgot=false" '
             'target="_self">Giriş ekranına dön</a></p>',
             unsafe_allow_html=True,
         )
+
+
+def render_new_password(token: str) -> None:
+    render_brand()
+    st.markdown(
+        "<h1 style='font-size:28px;text-align:center'>Yeni Şifre Belirle</h1>",
+        unsafe_allow_html=True,
+    )
+    with st.container(border=True):
+        password = st.text_input(
+            "Yeni şifre", type="password", placeholder="En az 8 karakter"
+        )
+        confirmation = st.text_input("Yeni şifre tekrar", type="password")
+        if st.button("Şifreyi Güncelle", use_container_width=True):
+            if password != confirmation:
+                st.error("Şifreler uyuşmuyor.")
+            else:
+                try:
+                    if reset_password(token, password):
+                        record_audit("password_reset_completed", "success")
+                        st.success(
+                            "Şifreniz güncellendi. Bu bağlantı tekrar kullanılamaz."
+                        )
+                        st.markdown(
+                            '<p style="text-align:center"><a href="./" '
+                            'target="_self">Giriş ekranına dön</a></p>',
+                            unsafe_allow_html=True,
+                        )
+                    else:
+                        st.error("Bağlantı geçersiz, kullanılmış veya süresi dolmuş.")
+                except ValueError as exc:
+                    st.error(str(exc))
 
 
 def render_registration() -> None:
@@ -185,6 +237,7 @@ def render_login() -> None:
 
 try:
     initialize_database()
+    initialize_security_tables()
 except Exception as exc:
     st.error(f"Veritabanı başlatılamadı: {exc}")
     st.stop()
@@ -197,7 +250,10 @@ if not st.session_state.logged_in:
     components.html(get_login_javascript(), height=1, width=1)
     _, login_column, _ = st.columns([1, 1.8, 1])
     with login_column:
-        if query_flag("forgot"):
+        reset_token = query_value("reset_token")
+        if reset_token:
+            render_new_password(str(reset_token))
+        elif query_flag("forgot"):
             render_password_reset()
         elif query_flag("register"):
             render_registration()
