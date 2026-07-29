@@ -24,7 +24,7 @@ def render_complaints_page(df_synthetic):
             title="Gelen Müşteri Şikayet Kategorileri Dağılımı",
             color_discrete_sequence=px.colors.qualitative.Pastel
         )
-        st.plotly_chart(apply_plotly_theme(fig_pie_comp), width='stretch')
+        st.plotly_chart(apply_plotly_theme(fig_pie_comp), use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
         
     with col_t2:
@@ -35,5 +35,5 @@ def render_complaints_page(df_synthetic):
             "Churn Riski Etkisi": ["Yüksek", "Orta", "Çok Yüksek", "Düşük", "Orta"]
         })
         st.markdown("<h4 style='color: #f8fafc;'>SLA & Çözüm Hızı Özeti</h4>", unsafe_allow_html=True)
-        st.dataframe(sla_df, width='stretch')
+        st.dataframe(sla_df, use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)

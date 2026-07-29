@@ -38,7 +38,7 @@ def render_cohort_page(df_synthetic):
             text_auto=True,
             title="Aylık Müşteri Tutundurma (Retention Rate) Kohort Matrisi"
         )
-        st.plotly_chart(apply_plotly_theme(fig_heat), width='stretch')
+        st.plotly_chart(apply_plotly_theme(fig_heat), use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
         
     with col_c2:

@@ -42,5 +42,5 @@ def render_nps_league_page(df_synthetic):
     top_loyal['Rozet'] = ["👑 Şampiyon VIP", "💎 Elmas Sadakat", "🥇 Altın Üye", "🥇 Altın Üye", "🥈 Gümüş Üye"]
     top_loyal['ToplamHarcamaTahmini'] = top_loyal['OrderCount'] * top_loyal['CashbackAmount'] * 2.5
     
-    st.dataframe(top_loyal[['Tenure', 'OrderCount', 'CashbackAmount', 'ToplamHarcamaTahmini', 'Rozet']], width='stretch')
+    st.dataframe(top_loyal[['Tenure', 'OrderCount', 'CashbackAmount', 'ToplamHarcamaTahmini', 'Rozet']], use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)

@@ -1,68 +1,44 @@
-"""Helper script to create MySQL database and `predictions` table.
+"""Create the LoyalCart MySQL database and application tables."""
 
-Usage:
-  - Install driver: pip install mysql-connector-python
-  - Set environment variables: MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB
-  - Run: python scripts/create_mysql_db.py
-"""
 import os
 import sys
 
 try:
     import mysql.connector
-    from mysql.connector import errorcode
-except Exception as e:
-    print("Missing dependency: mysql-connector-python. Install with: pip install mysql-connector-python")
+except ImportError:
+    print("mysql-connector-python kurulmalıdır.")
     raise
-
-HOST = os.getenv('MYSQL_HOST', '127.0.0.1')
-PORT = int(os.getenv('MYSQL_PORT', '3306'))
-USER = os.getenv('MYSQL_USER', 'root')
-PASSWORD = os.getenv('MYSQL_PASSWORD', '')
-DB_NAME = os.getenv('MYSQL_DB', 'loyalcart')
-
-SQL_CREATE_DB = f"CREATE DATABASE IF NOT EXISTS `{DB_NAME}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-SQL_USE_DB = f"USE `{DB_NAME}`;"
-SQL_CREATE_TABLE = '''
-CREATE TABLE IF NOT EXISTS predictions (
-  id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  customer_id VARCHAR(128) DEFAULT NULL,
-  features JSON DEFAULT NULL,
-  prediction TINYINT NOT NULL,
-  probability FLOAT DEFAULT NULL,
-  model_version VARCHAR(64) DEFAULT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-'''
 
 
 def main():
+    host = os.getenv("MYSQL_HOST", "127.0.0.1")
+    port = int(os.getenv("MYSQL_PORT", "3306"))
+    user = os.getenv("MYSQL_USER", "root")
+    password = os.getenv("MYSQL_PASSWORD", "")
+    database = os.getenv("MYSQL_DB", "loyalcart")
+
     try:
-        conn = mysql.connector.connect(host=HOST, port=PORT, user=USER, password=PASSWORD)
-        conn.autocommit = True
-        cursor = conn.cursor()
-        print(f"Connected to MySQL at {HOST}:{PORT} as {USER}")
-
-        print(f"Creating database `{DB_NAME}` if not exists...")
-        cursor.execute(SQL_CREATE_DB)
-        print("Database ensured.")
-
-        # Use DB and create table
-        cursor.execute(SQL_USE_DB)
-        print("Creating `predictions` table if not exists...")
-        cursor.execute(SQL_CREATE_TABLE)
-        print("Table `predictions` ensured.")
-
+        connection = mysql.connector.connect(
+            host=host, port=port, user=user, password=password
+        )
+        connection.autocommit = True
+        cursor = connection.cursor()
+        cursor.execute(
+            f"CREATE DATABASE IF NOT EXISTS `{database}` "
+            "CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
+        )
         cursor.close()
-        conn.close()
-        print("Done.")
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("Access denied: check MYSQL_USER and MYSQL_PASSWORD")
-        else:
-            print(f"MySQL error: {err}")
+        connection.close()
+
+        os.environ["DB_ENGINE"] = "mysql"
+        from db.repository import initialize_database
+
+        initialize_database()
+        print(f"`{database}` veritabanı ve LoyalCart tabloları hazır.")
+    except mysql.connector.Error as exc:
+        print(f"MySQL hatası: {exc}")
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

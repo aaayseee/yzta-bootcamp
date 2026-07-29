@@ -30,7 +30,7 @@ def render_segmentation_page(df_synthetic):
             labels={'PreferedOrderCat': 'Kategori', 'count': 'Müşteri Sayısı'},
             color_discrete_map={0: '#0ea5e9', 1: '#10b981'}
         )
-        st.plotly_chart(apply_plotly_theme(fig_cat), width='stretch')
+        st.plotly_chart(apply_plotly_theme(fig_cat), use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
         
     with col2:
@@ -44,7 +44,7 @@ def render_segmentation_page(df_synthetic):
             labels={'Complain': 'Şikayet (0: Yok, 1: Var)', 'count': 'Müşteri Sayısı'},
             color_discrete_map={0: '#0ea5e9', 1: '#10b981'}
         )
-        st.plotly_chart(apply_plotly_theme(fig_comp), width='stretch')
+        st.plotly_chart(apply_plotly_theme(fig_comp), use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
         
     col3, col4 = st.columns(2)
@@ -60,7 +60,7 @@ def render_segmentation_page(df_synthetic):
             title='Son Siparişten Geçen Gün vs Cashback (Balon: Harcanan Saat)',
             color_discrete_map={0: '#0ea5e9', 1: '#10b981'}
         )
-        st.plotly_chart(apply_plotly_theme(fig_scatter), width='stretch')
+        st.plotly_chart(apply_plotly_theme(fig_scatter), use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
         
     with col4:
@@ -73,5 +73,5 @@ def render_segmentation_page(df_synthetic):
             title='Memnuniyet Skoru & Tenure Kutu Grafiği (BoxPlot)',
             color_discrete_map={0: '#0ea5e9', 1: '#10b981'}
         )
-        st.plotly_chart(apply_plotly_theme(fig_box), width='stretch')
+        st.plotly_chart(apply_plotly_theme(fig_box), use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)

@@ -57,7 +57,7 @@ def render_integrations_page():
         
         col_t_btn, _ = st.columns([1.2, 0.8])
         with col_t_btn:
-            if st.button("Telegram Bağlantısını Test Et", width='stretch', key="tg_test_btn"):
+            if st.button("Telegram Bağlantısını Test Et", use_container_width=True, key="tg_test_btn"):
                 st.session_state.tg_token = tg_token
                 st.session_state.tg_chat_id = tg_chat_id
                 if not tg_token or not tg_chat_id:
@@ -84,7 +84,7 @@ def render_integrations_page():
         
         col_w_btn, _ = st.columns([1.2, 0.8])
         with col_w_btn:
-            if st.button("WhatsApp Bağlantısını Test Et", width='stretch', key="wp_test_btn"):
+            if st.button("WhatsApp Bağlantısını Test Et", use_container_width=True, key="wp_test_btn"):
                 st.session_state.wp_api_key = wp_api_key
                 if not wp_api_key:
                     st.error("WhatsApp API Token boş bırakılamaz!")
@@ -111,7 +111,7 @@ def render_integrations_page():
         
         col_z_btn, _ = st.columns([1.2, 0.8])
         with col_z_btn:
-            if st.button("Zendesk Bağlantısını Test Et", width='stretch', key="zendesk_test_btn"):
+            if st.button("Zendesk Bağlantısını Test Et", use_container_width=True, key="zendesk_test_btn"):
                 st.session_state.zendesk_subdomain = zendesk_subdomain
                 st.session_state.zendesk_token = zendesk_token
                 if not zendesk_subdomain or not zendesk_token:
@@ -156,11 +156,11 @@ def render_integrations_page():
         # Display logs in dataframe
         if st.session_state.integration_logs:
             df_logs = pd.DataFrame(st.session_state.integration_logs)
-            st.dataframe(df_logs, width='stretch')
+            st.dataframe(df_logs, use_container_width=True)
         else:
             st.info("Kayıtlı senkronizasyon günlüğü bulunmamaktadır.")
         
-        if st.button("Günlükleri Temizle", width='stretch', key="clear_logs_btn"):
+        if st.button("Günlükleri Temizle", use_container_width=True, key="clear_logs_btn"):
             st.session_state.integration_logs = []
             st.rerun()
             
