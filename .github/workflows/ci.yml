@@ -55,4 +55,32 @@ jobs:
         run: python -m unittest -v tests.test_api
 
       - name: Streamlit smoke test
-        run: python -m unittest -v tests.test_streamlit_app
+        shell: bash
+        run: |
+          python - <<'PY'
+          import subprocess
+
+          result = subprocess.run(
+              [
+                  "python",
+                  "-X",
+                  "faulthandler",
+                  "-m",
+                  "unittest",
+                  "-v",
+                  "tests.test_streamlit_app",
+              ],
+              stdout=subprocess.PIPE,
+              stderr=subprocess.STDOUT,
+              text=True,
+          )
+          print(result.stdout)
+          if result.returncode:
+              message = (
+                  result.stdout.replace("%", "%25")
+                  .replace("\r", "%0D")
+                  .replace("\n", "%0A")
+              )
+              print(f"::error title=Streamlit native traceback::{message}")
+          raise SystemExit(result.returncode)
+          PY
