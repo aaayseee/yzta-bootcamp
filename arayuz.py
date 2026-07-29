@@ -1,15 +1,20 @@
 import streamlit as st
 import os
-import sqlite3
+import streamlit.components.v1 as components
+
+from db.repository import (
+    DuplicateUserError,
+    authenticate_user,
+    create_user,
+    initialize_database,
+    record_audit,
+)
 
 # Compatibility helper for Streamlit rerun across versions
 def _safe_rerun():
-    try:
-        # Preferred in older/newer Streamlit versions
-        st.experimental_rerun()
-    except Exception:
-        # Fallback: stop execution; session state changes persist and UI will update on next interaction
-        st.stop()
+    if hasattr(st, "rerun"):
+        st.rerun()
+    st.experimental_rerun()
 
 # Query parameters compatibility helpers
 def _get_query_param(key):
@@ -32,67 +37,6 @@ def _get_query_param(key):
             pass
     return None
 
-def _clear_query_params():
-    try:
-        st.query_params.clear()
-    except AttributeError:
-        try:
-            st.experimental_set_query_params()
-        except Exception:
-            pass
-
-# User database functions
-def _init_user_db():
-    db_path = os.environ.get('SQLITE_PATH', 'loyalcart.db')
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
-    cur.execute('''
-        CREATE TABLE IF NOT EXISTS users (
-            username TEXT PRIMARY KEY,
-            email TEXT,
-            password TEXT,
-            role TEXT
-        )
-    ''')
-    # Default admin
-    cur.execute("SELECT * FROM users WHERE username = 'admin'")
-    if not cur.fetchone():
-        cur.execute("INSERT INTO users (username, email, password, role) VALUES ('admin', 'admin@loyalcart.com', '12345', 'administrator')")
-        conn.commit()
-    conn.close()
-
-def _verify_user(username, password):
-    try:
-        _init_user_db()
-        db_path = os.environ.get('SQLITE_PATH', 'loyalcart.db')
-        conn = sqlite3.connect(db_path)
-        cur = conn.cursor()
-        cur.execute("SELECT password FROM users WHERE LOWER(username) = ?", (username.lower(),))
-        row = cur.fetchone()
-        conn.close()
-        if row and row[0] == password:
-            return True
-    except Exception:
-        pass
-    return False
-
-def _register_user(username, email, password, role="manager"):
-    try:
-        _init_user_db()
-        db_path = os.environ.get('SQLITE_PATH', 'loyalcart.db')
-        conn = sqlite3.connect(db_path)
-        cur = conn.cursor()
-        cur.execute("INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)", 
-                    (username, email, password, role))
-        conn.commit()
-        conn.close()
-        return True
-    except sqlite3.IntegrityError:
-        pass
-    except Exception:
-        pass
-    return False
-
 # 1. Page Configuration
 st.set_page_config(
     page_title="LoyalCart Yönetici Paneli Girişi",
@@ -100,6 +44,12 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed"
 )
+
+try:
+    initialize_database()
+except Exception as exc:
+    st.error(f"Veritabanı başlatılamadı: {exc}")
+    st.stop()
 
 # 2. Imports from custom modules
 from styles import get_custom_css, get_3d_javascript, get_login_css, get_login_javascript
@@ -119,52 +69,13 @@ from pages_views.nps_league import render_nps_league_page
 from pages_views.integrations import render_integrations_page
 
 # 3. Authentication Check & Styling Dispatcher
-if st.session_state.get("just_logged_out"):
-    st.iframe("""
-    <script>
-        parent.window.localStorage.removeItem("loyalcart_remembered_user");
-        parent.window.localStorage.removeItem("loyalcart_remembered_token");
-        parent.window.location.href = parent.window.location.origin + parent.window.location.pathname;
-    </script>
-    """, height=1, width=1)
-    st.session_state.logged_in = False
-    st.session_state.just_logged_out = False
-    st.stop()
-
 if 'logged_in' not in st.session_state:
-    st.session_state.logged_in = os.environ.get('AUTO_LOGIN', '0') == '1'
-
-# Check auto-login from query params
-auto_user = _get_query_param("auto_login")
-auto_token = _get_query_param("token")
-
-if auto_user and auto_token:
-    if _verify_user(auto_user, auto_token):
-        st.session_state.logged_in = True
-        st.session_state.username = auto_user
-        st.session_state.save_remember_me = True
-        _clear_query_params()
-        _safe_rerun()
+    st.session_state.logged_in = False
 
 is_forgot = _get_query_param("forgot") == "true"
 is_register = _get_query_param("register") == "true"
 
 if not st.session_state.logged_in:
-    # Check if we should auto-login using browser localStorage
-    if not auto_user:
-        st.iframe("""
-        <script>
-            const rememberedUser = parent.window.localStorage.getItem("loyalcart_remembered_user");
-            const rememberedToken = parent.window.localStorage.getItem("loyalcart_remembered_token");
-            if (rememberedUser && rememberedToken && !parent.window.location.search.includes("auto_login")) {
-                const url = new URL(parent.window.location.href);
-                url.searchParams.set("auto_login", rememberedUser);
-                url.searchParams.set("token", rememberedToken);
-                parent.window.location.href = url.toString();
-            }
-        </script>
-        """, height=1, width=1)
-
     # Inject Login styling + custom fixes (left-aligned to prevent markdown code block formatting)
     st.markdown(get_login_css() + """
 <style>
