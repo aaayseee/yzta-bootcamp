@@ -1,0 +1,15 @@
+.git
+.github
+__pycache__
+*.pyc
+*.db
+.env
+.venv
+venv
+tests
+Sprint1
+Sprint2
+Sprint3
+Sprint4
+*.jpg
+Ekran*
