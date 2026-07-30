@@ -1402,6 +1402,67 @@ body.light-theme div[data-testid="stTextInput"] input {
 body.light-theme .remember-forgot {
     color: #0a0f1d !important;
 }
+
+/* Login form stability and responsive layout */
+body {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+}
+
+[data-testid="stMainBlockContainer"] {
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+    height: auto !important;
+    padding: clamp(20px, 5vh, 56px) 16px !important;
+}
+
+div[data-testid="column"]:has(.logo-container) {
+    width: min(420px, calc(100vw - 32px)) !important;
+    max-width: 420px !important;
+    padding: clamp(24px, 5vw, 40px) !important;
+}
+
+.st-key-login_form [data-testid="stVerticalBlockBorderWrapper"] {
+    border: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+.st-key-login_user_input > div,
+.st-key-login_pwd_input > div {
+    position: relative !important;
+}
+
+.st-key-login_user_input > div::after,
+.st-key-login_pwd_input > div::after {
+    font-family: "boxicons" !important;
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    font-size: 20px !important;
+    color: rgba(255, 255, 255, 0.78) !important;
+    pointer-events: none !important;
+    z-index: 5 !important;
+}
+
+.st-key-login_user_input > div::after {
+    content: "\\eec4" !important;
+    right: 16px !important;
+}
+
+.st-key-login_pwd_input > div::after {
+    content: "\\eea7" !important;
+    right: 46px !important;
+}
+
+.st-key-login_pwd_input input {
+    padding-right: 72px !important;
+}
+
+body.light-theme .st-key-login_user_input > div::after,
+body.light-theme .st-key-login_pwd_input > div::after {
+    color: rgba(10, 15, 29, 0.72) !important;
+}
 </style>
 """
 

@@ -201,9 +201,18 @@ def render_login() -> None:
         "<h1 style='font-size:28px;text-align:center'>Yönetici Girişi</h1>",
         unsafe_allow_html=True,
     )
-    with st.container(border=True):
-        username = st.text_input("Kullanıcı adı", placeholder="Kullanıcı adı")
-        password = st.text_input("Şifre", type="password", placeholder="Şifre")
+    with st.container(border=False, key="login_form"):
+        username = st.text_input(
+            "Kullanıcı adı",
+            placeholder="Kullanıcı adınızı girin",
+            key="login_user_input",
+        )
+        password = st.text_input(
+            "Şifre",
+            type="password",
+            placeholder="Şifrenizi girin",
+            key="login_pwd_input",
+        )
         st.caption("Kimlik bilgileri tarayıcı depolamasında veya URL'de saklanmaz.")
         st.markdown(
             '<p style="text-align:right"><a href="?forgot=true" '
@@ -212,8 +221,9 @@ def render_login() -> None:
         )
 
         if st.button("Giriş Yap", use_container_width=True):
-            user = authenticate_user(username, password) if username and password else None
-            if user:
+            if not username.strip() or not password:
+                st.error("Lütfen kullanıcı adı ve şifre alanlarını doldurun.")
+            elif user := authenticate_user(username, password):
                 st.session_state.logged_in = True
                 st.session_state.username = user["username"]
                 st.session_state.role = user["role"]

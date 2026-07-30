@@ -42,6 +42,18 @@ class StreamlitSmokeTests(unittest.TestCase):
             )
             self.assertEqual(list(app.error), [], f"{option} sayfasında hata oluştu")
 
+    def test_empty_login_shows_validation_message(self):
+        app = AppTest.from_file("arayuz.py").run(timeout=30)
+
+        app.button[0].click().run(timeout=30)
+
+        self.assertEqual(list(app.exception), [])
+        self.assertEqual(len(app.error), 1)
+        self.assertEqual(
+            app.error[0].value,
+            "Lütfen kullanıcı adı ve şifre alanlarını doldurun.",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
