@@ -14,7 +14,7 @@ Uygulamayı canlı olarak açmak için
 - Halil İbrahim ARİ — Product Owner
 - Zeynep Yağmur TÜRKELİ — Scrum Master
 - Ayşe ULAŞLI — Developer
-- Tümer GÜNEŞ — Developer
+
 
 ## Güncel durum
 
