@@ -4,6 +4,11 @@ LoyalCart, e-ticaret müşterilerinin kayıp (churn) olasılığını Random For
 modeliyle tahmin eden; risk analizi, segmentasyon, aksiyon önerileri ve kalıcı
 tahmin geçmişi sunan bir YZTA Bootcamp projesidir.
 
+## Canlı Demo
+
+Uygulamayı canlı olarak açmak için
+[LoyalCart Streamlit Uygulaması'nı ziyaret edin](https://yzta-bootcamp-kk7ipfzadojsum6hmgzfm2.streamlit.app/).
+
 ## Takım
 
 - Halil İbrahim ARİ — Product Owner
