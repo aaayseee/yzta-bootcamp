@@ -728,6 +728,129 @@ section.main .block-container {
     background: linear-gradient(to bottom, rgba(15, 118, 110, 0.6), rgba(3, 105, 161, 0.05)) !important;
     box-shadow: none !important;
 }
+
+/* Top Navigation Bar Styling */
+.top-nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(10, 15, 28, 0.5) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-bottom: 1.5px solid rgba(14, 165, 233, 0.25) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37) !important;
+    padding: 10px 24px !important;
+    border-radius: 16px !important;
+    margin-bottom: 24px !important;
+    width: 100% !important;
+    z-index: 999;
+}
+
+.top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.top-nav-logo {
+    font-weight: 800;
+    font-size: 22px;
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.logo-emoji-circle-sm {
+    background: linear-gradient(135deg, #10b981 0%, #0ea5e9 100%);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.25);
+}
+
+.top-nav-divider {
+    color: rgba(255, 255, 255, 0.25);
+    font-weight: 300;
+    font-size: 18px;
+}
+
+.top-nav-title {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'Outfit', sans-serif;
+}
+
+.top-nav-right {
+    display: flex;
+    align-items: center;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-avatar {
+    font-size: 14px;
+}
+
+.user-name {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    background-color: #10b981;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 8px #10b981;
+}
+
+/* Light Theme Overrides for Top Nav Bar */
+body.light-theme .top-nav-bar {
+    background: rgba(255, 255, 255, 0.8) !important;
+    border: 1px solid rgba(10, 15, 29, 0.08) !important;
+    border-bottom: 1.5px solid rgba(14, 165, 233, 0.15) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light-theme .top-nav-logo {
+    color: #0c1524 !important;
+}
+
+body.light-theme .top-nav-divider {
+    color: rgba(0, 0, 0, 0.15) !important;
+}
+
+body.light-theme .top-nav-title {
+    color: #475569 !important;
+}
+
+body.light-theme .user-profile {
+    background: rgba(0, 0, 0, 0.03) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+body.light-theme .user-name {
+    color: #0c1524 !important;
+}
 </style>
 """
 
@@ -979,6 +1102,20 @@ footer {
     display: none !important;
 }
 
+html, body, 
+.stApp,
+[data-testid="stAppViewContainer"], 
+[data-testid="stAppViewBlockContainer"],
+[data-testid="stMainBlockContainer"],
+.main,
+section.main {
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+    height: auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
 html {
     background: transparent !important;
 }
@@ -988,9 +1125,7 @@ body {
     background: url("https://i.pinimg.com/originals/d7/b9/0c/d7b90cc80898e8823455a127945719af.jpg") no-repeat !important;
     background-size: cover !important;
     background-position: center !important;
-    min-height: 100vh !important;
     width: 100vw !important;
-    overflow: hidden !important;
     transition: background 0.5s ease-in-out !important;
 }
 
@@ -1010,7 +1145,9 @@ body.light-theme {
     padding: 0 !important;
     margin: 0 !important;
     max-width: 100% !important;
-    height: 100vh !important;
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+    height: auto !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
@@ -1026,61 +1163,105 @@ div[data-testid="stHorizontalBlock"] {
     padding: 0 !important;
 }
 
-/* Middle Column styled as the login card (.wrapper) - Dark Glass (Default) */
-div[data-testid="column"]:has(.logo-container) {
-    width: 420px !important;
-    max-width: 420px !important;
-    flex: none !important;
-    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%), 
-                      linear-gradient(135deg, rgba(16, 185, 129, 0.4), rgba(14, 165, 233, 0.4), rgba(168, 85, 247, 0.4)) !important;
-    background-origin: border-box !important;
-    background-clip: padding-box, border-box !important;
-    border: 2px solid transparent !important;
+/* Blue Glassmorphism Login Card Wrapper Reset */
+div[data-testid="stVerticalBlockBorderWrapper"]:has(.st-key-login_card) {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Single Blue Glassmorphism Login Card */
+.st-key-login_card {
+    width: 100% !important;
+    max-width: 480px !important; /* Widened horizontally */
+    background: rgba(10, 25, 47, 0.12) !important; /* Soft transparent background */
+    border: 1.5px solid rgba(14, 165, 233, 0.25) !important; /* Soft solid blue border */
+    
     backdrop-filter: blur(20px) !important;
     -webkit-backdrop-filter: blur(20px) !important;
-    box-shadow: 0 0 50px rgba(16, 185, 129, 0.15), 0 0 30px rgba(14, 165, 233, 0.12), inset 0 0 25px rgba(255, 255, 255, 0.04) !important;
+    
+    /* Multi-layered gradient neon glow shadow (Blue, Green, and Ambient) */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 
+                0 0 25px rgba(14, 165, 233, 0.2), 
+                0 0 12px rgba(16, 185, 129, 0.15), 
+                inset 0 0 20px rgba(14, 165, 233, 0.1) !important;
+                
     color: #fff !important;
     border-radius: 16px !important;
-    padding: 40px 40px !important;
+    padding: 20px 32px !important; /* Reduced vertical padding, increased horizontal */
     z-index: 10 !important;
     position: relative !important;
     transition: all 0.5s ease !important;
-    animation: float-card 6s ease-in-out infinite !important;
+    margin: 0 auto !important; /* Center horizontally with no vertical margin pushing it down */
+    
+    /* User requested styles */
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    line-height: 1.6 !important;
+    text-size-adjust: 100% !important;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+    -webkit-font-smoothing: auto !important;
+    font-family: 'Outfit', sans-serif !important;
+    color: rgb(249, 250, 251) !important;
+    color-scheme: dark !important;
+    user-select: auto !important;
+    box-sizing: border-box !important;
 }
 
-/* Light Theme overrides for card - Prominent Cream Glass */
-body.light-theme div[data-testid="column"]:has(.logo-container) {
-    background-image: linear-gradient(135deg, rgba(253, 251, 247, 0.96) 0%, rgba(248, 245, 235, 0.88) 100%), 
-                      linear-gradient(135deg, rgba(16, 185, 129, 0.5), rgba(14, 165, 233, 0.5)) !important;
-    border: 2px solid transparent !important;
-    box-shadow: 0 15px 35px rgba(10, 15, 29, 0.18), 0 0 25px rgba(14, 165, 233, 0.15), inset 0 0 20px rgba(255, 255, 255, 0.6) !important;
+/* Light Theme overrides for card - Transparent Sky Blue Glass with Glow Shadow */
+body.light-theme .st-key-login_card {
+    background: rgba(224, 242, 254, 0.35) !important;
+    border: 1.5px solid rgba(14, 165, 233, 0.3) !important;
+    box-shadow: 0 15px 35px rgba(14, 165, 233, 0.1), 
+                0 0 20px rgba(16, 185, 129, 0.12), 
+                inset 0 0 15px rgba(255, 255, 255, 0.5) !important;
 }
 
 /* Force absolute black text in light theme for all elements inside the login card */
-body.light-theme div[data-testid="column"]:has(.logo-container) * {
+body.light-theme .st-key-login_card * {
     color: #000000 !important;
 }
 /* Keep submit button text white */
-body.light-theme div[data-testid="column"]:has(.logo-container) div.stButton button,
-body.light-theme div[data-testid="column"]:has(.logo-container) div.stButton button * {
+body.light-theme .st-key-login_card div.stButton button,
+body.light-theme .st-key-login_card div.stButton button * {
     color: #ffffff !important;
 }
 /* Keep links blue */
-body.light-theme div[data-testid="column"]:has(.logo-container) a,
-body.light-theme div[data-testid="column"]:has(.logo-container) a * {
+body.light-theme .st-key-login_card a,
+body.light-theme .st-key-login_card a * {
     color: #0284c7 !important;
 }
 
-/* Hide first and third columns */
-div[data-testid="column"]:not(:has(.logo-container)) {
+/* Center the horizontal columns block */
+div[data-testid="stHorizontalBlock"] {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
+/* Let the middle column center nicely */
+div[data-testid="column"]:has(.st-key-login_card) {
+    width: 100% !important;
+    max-width: 480px !important;
+    flex: none !important;
+    margin: 0 auto !important; /* Force centering the column itself! */
+    display: flex !important;
+    justify-content: center !important;
+}
+
+/* Hide first and third columns in layout to focus on the login card */
+div[data-testid="column"]:not(:has(.st-key-login_card)) {
     display: none !important;
 }
 
 /* Form Title styling - Dynamic Color Shift Gradient */
-div[data-testid="column"]:has(.logo-container) h1 {
-    font-size: 36px !important;
+.st-key-login_card h1,
+div[data-testid="stVerticalBlockBorderWrapper"]:has(.st-key-login_card) h1 {
+    font-size: 26px !important; /* Compact title font size */
     text-align: center !important;
-    margin-bottom: 20px !important;
+    margin-top: 0 !important;
+    margin-bottom: 10px !important; /* Compact margin */
     font-weight: 700 !important;
     letter-spacing: -0.5px !important;
     background: linear-gradient(-45deg, #10b981, #0ea5e9, #a855f7, #10b981) !important;
@@ -1094,61 +1275,73 @@ div[data-testid="column"]:has(.logo-container) h1 {
 div[data-testid="stTextInput"] {
     position: relative !important;
     width: 100% !important;
-    height: 48px !important;
+    height: auto !important;
     margin: 12px 0 !important;
     background: transparent !important;
 }
 
-/* Hide input label */
+/* Show input label */
 div[data-testid="stTextInput"] label {
-    display: none !important;
+    display: block !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: rgb(249, 250, 251) !important;
+    margin-bottom: 6px !important;
+    width: 100% !important;
+    text-align: left !important;
 }
 
 /* BaseWeb elements resets */
 div[data-testid="stTextInput"] > div[data-baseweb="input"] {
-    background: transparent !important;
-    border: none !important;
-    height: 100% !important;
+    background: rgba(10, 15, 30, 0.65) !important; /* Dark solid slate fill color */
+    border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 12px !important;
+    height: 48px !important;
     width: 100% !important;
+    transition: all 0.22s ease !important;
+}
+div[data-testid="stTextInput"] > div[data-baseweb="input"]:focus-within {
+    border-color: #0ea5e9 !important;
+    box-shadow: 0 0 15px rgba(14, 165, 233, 0.45) !important;
+    background: rgba(10, 15, 30, 0.85) !important;
 }
 
 /* The actual input field - Dark Theme */
 div[data-testid="stTextInput"] input {
     width: 100% !important;
     height: 100% !important;
-    background: rgba(255, 255, 255, 0.02) !important;
-    border: 2px solid rgba(255, 255, 255, 0.15) !important;
-    border-radius: 12px !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
     font-size: 15px !important;
     color: #fff !important;
-    padding: 12px 42px 12px 14px !important;
+    padding: 12px 40px 12px 14px !important; /* Spaced padding-right for eye button */
     outline: none !important;
     box-shadow: none !important;
-    transition: all 0.22s ease !important;
 }
 div[data-testid="stTextInput"] input::placeholder {
-    color: rgba(255, 255, 255, 0.7) !important;
-}
-div[data-testid="stTextInput"] input:focus {
-    border-color: #0ea5e9 !important;
-    box-shadow: 0 0 15px rgba(14, 165, 233, 0.45) !important;
-    background: rgba(255, 255, 255, 0.06) !important;
+    color: rgba(255, 255, 255, 0.6) !important;
 }
 
 /* Light Theme overrides for inputs */
-body.light-theme div[data-testid="stTextInput"] input {
+body.light-theme div[data-testid="stTextInput"] > div[data-baseweb="input"] {
     background: #faf8f2 !important;
     border: 2px solid rgba(10, 15, 29, 0.3) !important;
-    color: #0a0f1d !important;
-    font-weight: 500 !important;
 }
-body.light-theme div[data-testid="stTextInput"] input::placeholder {
-    color: rgba(10, 15, 29, 0.65) !important;
-}
-body.light-theme div[data-testid="stTextInput"] input:focus {
+body.light-theme div[data-testid="stTextInput"] > div[data-baseweb="input"]:focus-within {
     border-color: #0ea5e9 !important;
     box-shadow: 0 0 12px rgba(14, 165, 233, 0.35) !important;
     background: #ffffff !important;
+}
+body.light-theme div[data-testid="stTextInput"] input {
+    background: transparent !important;
+    color: #0a0f1d !important;
+    font-weight: 500 !important;
+    border: none !important;
+}
+body.light-theme div[data-testid="stTextInput"] input::placeholder {
+    color: rgba(10, 15, 29, 0.65) !important;
 }
 
 /* Set position relative for icon placement */
@@ -1227,18 +1420,25 @@ body.light-theme .remember-forgot a {
 }
 
 /* Submit Button - Dark Theme */
+div.stButton button,
+div.stButton button * {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: #0c1524 !important;
+    font-weight: 700 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
 div.stButton button {
     width: 100% !important;
     height: 45px !important;
-    background: #fff !important;
     border: none !important;
     outline: none !important;
     border-radius: 40px !important;
     box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15) !important;
     cursor: pointer !important;
     font-size: 16px !important;
-    color: #111 !important;
-    font-weight: 600 !important;
     position: relative !important;
     overflow: hidden !important;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
@@ -1254,7 +1454,8 @@ div.stButton button::before {
     transition: 0.5s ease !important;
 }
 div.stButton button:hover {
-    background: #fff !important;
+    background-color: #ffffff !important;
+    background: #ffffff !important;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.6) !important;
     transform: translateY(-2px) !important;
 }
@@ -1264,8 +1465,9 @@ div.stButton button:hover::before {
 div.stButton button:focus, div.stButton button:active {
     border: none !important;
     outline: none !important;
-    background: #fff !important;
-    color: #333 !important;
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: #0c1524 !important;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.6) !important;
 }
 
@@ -1335,14 +1537,14 @@ body.light-theme div[data-testid="stTextInput"] button svg {
 
 /* Logo styling with high specificity */
 .logo-container .logo-text,
-div[data-testid="column"]:has(.logo-container) .logo-container span.logo-text,
-div[data-testid="column"]:has(.logo-container) span.logo-text {
+.st-key-login_card .logo-container span.logo-text,
+.st-key-login_card span.logo-text {
     color: #ffffff !important;
 }
 
 body.light-theme .logo-container .logo-text,
-body.light-theme div[data-testid="column"]:has(.logo-container) .logo-container span.logo-text,
-body.light-theme div[data-testid="column"]:has(.logo-container) span.logo-text {
+body.light-theme .st-key-login_card .logo-container span.logo-text,
+body.light-theme .st-key-login_card span.logo-text {
     color: #000000 !important;
 }
 
@@ -1394,38 +1596,76 @@ body.light-theme div.stButton button * {
     color: #ffffff !important;
     border: none !important;
 }
-body.light-theme div[data-testid="stTextInput"] input {
+body.light-theme div[data-testid="stTextInput"] > div[data-baseweb="input"] {
     background: #ffffff !important;
-    color: #0a0f1d !important;
     border: 1px solid rgba(10,15,29,0.12) !important;
+}
+body.light-theme div[data-testid="stTextInput"] input {
+    background: transparent !important;
+    color: #0a0f1d !important;
+    border: none !important;
 }
 body.light-theme .remember-forgot {
     color: #0a0f1d !important;
 }
 
 /* Login form stability and responsive layout */
-body {
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-}
-
-[data-testid="stMainBlockContainer"] {
+html, body, 
+.stApp,
+[data-testid="stAppViewContainer"], 
+[data-testid="stAppViewBlockContainer"],
+[data-testid="stMainBlockContainer"],
+.main,
+section.main {
     min-height: 100vh !important;
     min-height: 100dvh !important;
     height: auto !important;
-    padding: clamp(20px, 5vh, 56px) 16px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
 }
 
-div[data-testid="column"]:has(.logo-container) {
-    width: min(420px, calc(100vw - 32px)) !important;
-    max-width: 420px !important;
-    padding: clamp(24px, 5vw, 40px) !important;
+[data-testid="stMainBlockContainer"] {
+    padding: 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
 }
 
-.st-key-login_form [data-testid="stVerticalBlockBorderWrapper"] {
+/* Center all child elements vertically and horizontally inside Main Block Container */
+[data-testid="stMainBlockContainer"] > div {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
+.st-key-login_card {
+    width: min(480px, calc(100vw - 24px)) !important;
+    max-width: 480px !important;
+    padding: 20px 32px !important;
+}
+
+.st-key-login_card [data-testid="stVerticalBlock"] {
+    gap: 10px !important; /* Compresses vertical spacing */
+}
+
+div[data-testid="stVerticalBlockBorderWrapper"]:has(.st-key-login_card) {
+    width: min(480px, calc(100vw - 24px)) !important;
+    max-width: 480px !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 auto !important; /* Force centering the wrapper! */
+}
+
+.st-key-login_card [data-testid="stVerticalBlockBorderWrapper"] {
     border: 0 !important;
     padding: 0 !important;
     background: transparent !important;
+    box-shadow: none !important;
 }
 
 .st-key-login_user_input > div,
@@ -1433,36 +1673,6 @@ div[data-testid="column"]:has(.logo-container) {
     position: relative !important;
 }
 
-.st-key-login_user_input > div::after,
-.st-key-login_pwd_input > div::after {
-    font-family: "boxicons" !important;
-    position: absolute !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    font-size: 20px !important;
-    color: rgba(255, 255, 255, 0.78) !important;
-    pointer-events: none !important;
-    z-index: 5 !important;
-}
-
-.st-key-login_user_input > div::after {
-    content: "\\eec4" !important;
-    right: 16px !important;
-}
-
-.st-key-login_pwd_input > div::after {
-    content: "\\eea7" !important;
-    right: 46px !important;
-}
-
-.st-key-login_pwd_input input {
-    padding-right: 72px !important;
-}
-
-body.light-theme .st-key-login_user_input > div::after,
-body.light-theme .st-key-login_pwd_input > div::after {
-    color: rgba(10, 15, 29, 0.72) !important;
-}
 </style>
 """
 
@@ -1592,7 +1802,17 @@ const injectLoginAnimation = () => {
                         colorLightEnd: 'rgba(14, 165, 233, 0.05)'
                     },
                     {
-                        yCenter: height * 0.6,
+                        yCenter: height * 0.56,
+                        amp: 80,
+                        freq: 0.0025,
+                        speed: -0.9,
+                        colorDarkStart: 'rgba(6, 182, 212, 0.38)',   // Parlak Neon Cyan Dalga (Yeni Parlak Işıklı Dalga!)
+                        colorDarkEnd: 'rgba(6, 182, 212, 0.02)',
+                        colorLightStart: 'rgba(6, 182, 212, 0.55)',  // Neon Cyan Light (Very bright!)
+                        colorLightEnd: 'rgba(6, 182, 212, 0.05)'
+                    },
+                    {
+                        yCenter: height * 0.62,
                         amp: 60,
                         freq: 0.004,
                         speed: 1.1,
@@ -1625,6 +1845,24 @@ const injectLoginAnimation = () => {
                     
                     ctx.fillStyle = grad;
                     ctx.fill();
+                    
+                    // Üst kenara parlayan neon çizgisi ekle (Glow Effect)
+                    ctx.beginPath();
+                    for (let x = 0; x <= width; x += 15) {
+                        const y = b.yCenter + Math.sin(x * b.freq + time * b.speed) * b.amp;
+                        if (x === 0) {
+                            ctx.moveTo(x, y);
+                        } else {
+                            ctx.lineTo(x, y);
+                        }
+                    }
+                    ctx.save();
+                    ctx.shadowBlur = 12;
+                    ctx.shadowColor = isLight ? b.colorLightStart : b.colorDarkStart;
+                    ctx.strokeStyle = isLight ? b.colorLightStart : b.colorDarkStart;
+                    ctx.lineWidth = 2.0;
+                    ctx.stroke();
+                    ctx.restore();
                 });
             };
             drawWavingWaves();

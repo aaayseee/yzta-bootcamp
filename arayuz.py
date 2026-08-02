@@ -70,7 +70,7 @@ def query_flag(name: str) -> bool:
 def render_brand() -> None:
     st.markdown(
         """
-        <div class="logo-container" style="text-align:center;margin-bottom:28px">
+        <div class="logo-container" style="text-align:center;margin-bottom:12px">
           <span class="logo-text" style="font-weight:900;font-size:44px">
             L<span class="logo-emoji-circle"
               style="background:linear-gradient(135deg,#10b981,#0ea5e9);
@@ -84,12 +84,12 @@ def render_brand() -> None:
 
 
 def render_password_reset() -> None:
-    render_brand()
-    st.markdown(
-        "<h1 style='font-size:28px;text-align:center'>Şifre Sıfırlama</h1>",
-        unsafe_allow_html=True,
-    )
-    with st.container(border=True):
+    with st.container(border=True, key="login_card"):
+        render_brand()
+        st.markdown(
+            "<h1 style='font-size:28px;text-align:center'>Şifre Sıfırlama</h1>",
+            unsafe_allow_html=True,
+        )
         identifier = st.text_input(
             "Kullanıcı adı veya e-posta",
             placeholder="Kullanıcı adı veya e-posta",
@@ -126,12 +126,12 @@ def render_password_reset() -> None:
 
 
 def render_new_password(token: str) -> None:
-    render_brand()
-    st.markdown(
-        "<h1 style='font-size:28px;text-align:center'>Yeni Şifre Belirle</h1>",
-        unsafe_allow_html=True,
-    )
-    with st.container(border=True):
+    with st.container(border=True, key="login_card"):
+        render_brand()
+        st.markdown(
+            "<h1 style='font-size:28px;text-align:center'>Yeni Şifre Belirle</h1>",
+            unsafe_allow_html=True,
+        )
         password = st.text_input(
             "Yeni şifre", type="password", placeholder="En az 8 karakter"
         )
@@ -158,12 +158,12 @@ def render_new_password(token: str) -> None:
 
 
 def render_registration() -> None:
-    render_brand()
-    st.markdown(
-        "<h1 style='font-size:28px;text-align:center'>Yönetici Kaydı</h1>",
-        unsafe_allow_html=True,
-    )
-    with st.container(border=True):
+    with st.container(border=True, key="login_card"):
+        render_brand()
+        st.markdown(
+            "<h1 style='font-size:28px;text-align:center'>Yönetici Kaydı</h1>",
+            unsafe_allow_html=True,
+        )
         username = st.text_input("Kullanıcı adı", placeholder="Kullanıcı adı")
         email = st.text_input("E-posta", placeholder="E-posta")
         password = st.text_input("Şifre", type="password", placeholder="En az 8 karakter")
@@ -196,12 +196,12 @@ def render_registration() -> None:
 
 
 def render_login() -> None:
-    render_brand()
-    st.markdown(
-        "<h1 style='font-size:28px;text-align:center'>Yönetici Girişi</h1>",
-        unsafe_allow_html=True,
-    )
-    with st.container(border=False, key="login_form"):
+    with st.container(border=True, key="login_card"):
+        render_brand()
+        st.markdown(
+            "<h1 style='font-size:28px;text-align:center'>Yönetici Girişi</h1>",
+            unsafe_allow_html=True,
+        )
         username = st.text_input(
             "Kullanıcı adı",
             placeholder="Kullanıcı adınızı girin",
@@ -273,6 +273,24 @@ if not st.session_state.logged_in:
 
 st.markdown(get_custom_css(), unsafe_allow_html=True)
 st.markdown(get_3d_javascript(), unsafe_allow_html=True)
+
+# Top Bar / Şerit Rendering
+st.markdown("""
+<div class="top-nav-bar">
+    <div class="top-nav-left">
+        <span class="top-nav-logo">L<span class="logo-emoji-circle-sm">🛒</span>yalCart</span>
+        <span class="top-nav-divider">/</span>
+        <span class="top-nav-title">Müşteri Kayıp (Churn) Analiz Platformu</span>
+    </div>
+    <div class="top-nav-right">
+        <div class="user-profile">
+            <span class="user-avatar">👤</span>
+            <span class="user-name">Yönetici (Admin)</span>
+            <span class="status-indicator"></span>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 synthetic_data = get_synthetic_data()
 selected_menu = render_sidebar()

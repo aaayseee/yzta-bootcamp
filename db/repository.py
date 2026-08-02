@@ -21,6 +21,24 @@ from typing import Any, Dict, Iterable, List, Optional
 PBKDF2_ITERATIONS = 390_000
 
 
+def _load_env() -> None:
+    env_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env")
+    if os.path.exists(env_path):
+        with open(env_path, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    key, value = line.split("=", 1)
+                    key = key.strip()
+                    value = value.strip()
+                    if value.startswith(('"', "'")) and value.endswith(('"', "'")):
+                        value = value[1:-1]
+                    if key not in os.environ:
+                        os.environ[key] = value
+
+_load_env()
+
+
 class DuplicateUserError(ValueError):
     """Raised when a username or email address already exists."""
 
@@ -73,8 +91,8 @@ def _placeholder() -> str:
 
 
 def hash_password(password: str) -> str:
-    if len(password) < 8:
-        raise ValueError("Şifre en az 8 karakter olmalıdır.")
+    if len(password) < 4:
+        raise ValueError("Şifre en az 4 karakter olmalıdır.")
     salt = secrets.token_bytes(16)
     digest = hashlib.pbkdf2_hmac(
         "sha256", password.encode("utf-8"), salt, PBKDF2_ITERATIONS
@@ -247,7 +265,7 @@ def ensure_admin_from_environment() -> bool:
     email = os.getenv("LOYALCART_ADMIN_EMAIL", "admin@loyalcart.local").strip()
     existing = get_user(username)
     if existing:
-        if existing.get("password_hash"):
+        if existing.get("password_hash") and verify_password(password, existing["password_hash"]):
             return True
         encoded = hash_password(password)
         p = _placeholder()
