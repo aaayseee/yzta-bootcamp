@@ -319,7 +319,7 @@ otomatik çalıştırır.
 - [Sprint 1](Sprint1/)
 - [Sprint 2](Sprint2/)
 - [Sprint 3](Sprint3/)
-- [Sprint 4](Sprint4/)
+
 
 Sprint 1'de raporlanan model doğruluğu `%97.4` değeridir. Model
 değerlendirmesinin yeniden üretilebilmesi için veri bölme yöntemi, sınıf
